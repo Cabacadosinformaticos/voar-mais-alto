@@ -16,7 +16,7 @@
        $imagem = $_FILES['imagem']['name'];
 
        if($imagem!=''){
-           $pasta ="img_produtos";
+           $pasta ="img_produtos/";
            if(move_uploaded_file($_FILES['imagem']['tmp_name'], $pasta.$imagem)){
                 $imagem =$pasta.$imagem ;
        }
