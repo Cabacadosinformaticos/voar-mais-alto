@@ -17,7 +17,6 @@
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/shop-item.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   
@@ -40,32 +39,43 @@
   include 'db/config.php';
 ?>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand"><h3><n>Voar Mais Alto</n></h3></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Home
-              <span class="sr-only">(current)</span>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-transparent">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo mr-auto">
+        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="index.php">Home</a></li>
+          <li class="drop-down active"><a href="viagens.php">Viagens</a>
+            <ul>
+			<li>
+			<a
+                <?php
+                $sql = "Select * from categoria";
+                $cats =$conexao->query($sql);
+                if ($cats->num_rows >0) {
+                  while ($c = $cats->fetch_assoc()){
+                    $cat=$c['CategoriaID'];
+                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  }
+                }
+				?>
             </a>
+			</li>
+			</ul>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="viagens.php">Viagens</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="servicos.php">Serviços</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sobrenos.php">Sobre nós</a>
-          </li>
-            <?php		 
+          <li><a href="servicos.php">Serviços</a></li>
+          <li><a href="sobrenos.php">Sobre Nós</a></li>
+          <li><a href="#footer">Contactos</a></li>
+		  
+		  <?php		  
 		  //echo $_SESSION['utilizador'];
-		   session_start();
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
 			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
@@ -77,30 +87,23 @@
 		  }	  
 		  ?>
 		  
-		  <li class="nav-item">		     
-             <?php	
-			 if (isset($_SESSION['idutilizador'])){			 
-				 $idutilizador = $_SESSION['idutilizador'];				 
-				 $sql = "select count(*) from carrinho where idutilizador ='$idutilizador'";
-				 $resultado = $conexao->query($sql);
-				 $num_rows = mysqli_fetch_row($resultado)[0];
-				 //echo $num_rows;
-			 			 
-				 if ($num_rows > 0) {
-					 echo '<li class="nav-item">';				 
-					 echo '<a class="nav-link" href="carrinho.php"><i class="fa fa-cart-plus"></i></a>';
-					 echo '</li>';
-					 echo '<li class="nav-item">';	
-					 echo'<span class="badge badge-light">'. $num_rows . '</span>';
-				     echo '<li class="nav-item">';	
-				  }
-			 }
-              ?>
-          </li>
-       </ul>
-      </div>
+		  <?php
+		  //echo $_SESSION['utilizador'];
+		  if (isset($_SESSION['utilizador'])){
+			  
+			if($_SESSION['tipo']=='admin')
+			{
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+            }
+			
+		  }
+		  ?>
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
     </div>
-  </nav>
+  </header><!-- End Header -->
 
   <!-- Page Content -->
   <section id="hero">

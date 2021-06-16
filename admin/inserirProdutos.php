@@ -107,7 +107,7 @@
 				 &emsp;&emsp;
                 <div class="form-group">
                     <label> Preço: </label>
-                    <input type="text" name="preco" class="form-control" required>
+                    <input type="number" name="preco" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label> Stock: </label>
