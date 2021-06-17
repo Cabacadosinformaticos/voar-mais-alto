@@ -47,6 +47,9 @@
           <li class="nav-item">
             <a class="nav-link" href="listaUtilizadores.php">Utilizadores</a>
           </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="../index.php"><b>Consultar o site</b></a>
+         </li>
 		  
 		  <?php
 		  session_start();
@@ -68,10 +71,12 @@
   <br></br>
 
   <!-- Page Content -->
-  <div class="container">
+  <div class="container-fluid">
 
     <div class="row">
-      <div class="col-lg-2">
+	  <div class="col-lg-1">
+	  </div>
+      <div class="col-lg-1">
         <h3 class="my-4"><center>Categorias</center></h3>
         <div class="list-group">
 
@@ -88,7 +93,7 @@
         </div>
       </div>
       <!-- /.col-lg-3 -->
-      <div class="col-lg-10">
+      <div class="col-lg-9">
         <div class="row">
         <p> <br></p>
                 <?php
@@ -137,7 +142,7 @@
                     <td>'.$p['produtoNome'].'</td>
                     <td>'.$p['preco'].' </td>
                     <td>'.$p['descricao'].' </td>
-                    <td><img src='.$p['imagem'].' style="width:200px; height:auto;"></td>
+                    <td><img src="'.$p['imagem'].'" style="width:200px; height:auto;"></td>
                     <td>'.$p['CategoriaNome'].' </td>
                     <td>'.$p['stock'].' </td>
                     
@@ -157,7 +162,7 @@
       </div>
       <!-- /.col-lg-9 -->
 
-</div>
+	</div>
      </div>
     <!-- /.row --> 
   </div>

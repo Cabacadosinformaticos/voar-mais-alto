@@ -17,7 +17,6 @@
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/shop-item.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   
@@ -34,35 +33,46 @@
 <body>
 <?php
   include 'db/config.php';
+  session_start();
 ?>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand"><h3><n>Voar Mais Alto</n></h3></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Home
-              <span class="sr-only">(current)</span>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo mr-auto">
+        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="index.php">Home</a></li>
+          <li class="drop-down active"><a href="viagens.php">Viagens</a>
+            <ul>
+			<li>
+			<a
+                <?php
+                $sql = "Select * from categoria";
+                $cats =$conexao->query($sql);
+                if ($cats->num_rows >0) {
+                  while ($c = $cats->fetch_assoc()){
+                    $cat=$c['CategoriaID'];
+                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  }
+                }
+				?>
             </a>
+			</li>
+			</ul>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="viagens.php">Viagens</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="servicos.php">Serviços</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sobrenos.php">Sobre nós</a>
-          </li>
+          <li><a href="servicos.php">Serviços</a></li>
+          <li><a href="sobrenos.php">Sobre Nós</a></li>
+          <li><a href="#footer">Contactos</a></li>
 		  
 		  <?php		  
 		  //echo $_SESSION['utilizador'];
-		  session_start();
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
 			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
@@ -73,97 +83,99 @@
 			  echo '</li>';
 		  }	  
 		  ?>
+		  
+		  <?php
+		  //echo $_SESSION['utilizador'];
+		  if (isset($_SESSION['utilizador'])){
+			  
+			if($_SESSION['tipo']=='admin')
+			{
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+            }
+			
+		  }
+		  ?>
+
         </ul>
-      </div>
+      </nav><!-- .nav-menu -->
+
     </div>
-  </nav>
-
-  <!-- Page Content -->
-  <section id="hero">
-    <div class="hero-container" data-aos="fade-up">
-  <div class="container">
+  </header><!-- End Header -->
   
-  <br></br>
+  <main id="main">
 
-    <div class="row">
+	<!-- ======= Breadcrumbs Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
 
-      <div class="col-lg-1">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Detalhes da Viagem</h2>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="viagens.php">Viagens</a></li>
+            <li>Detalhes da Viagem</li>
+          </ol>
+        </div>
 
       </div>
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-10">
-
-        <div class="row">
-
-
-        <?php
+    </section><!-- Breadcrumbs Section -->
+	
+	<!-- ======= Portfolio Details Section ======= -->
+    <section class="portfolio-details">
+      <div class="container">
+	  <?php
             $id = $_GET['id'];
+			$id_2 = $_GET['id'];
             $sql = "SELECT * FROM produto WHERE produtoID='$id'";
-            $produtos = $conexao->query($sql);         
-                
-            if ($produtos->num_rows > 0) {           
-                $p = $produtos->fetch_assoc();
-            echo'
-            <div class="card mt-4 mx-auto" style="background-color:#f2f2f2">
-				<div class="card-body">
-            <h1 class="card-title"><center>'.$p['produtoNome'].'</center></h1>
-			&ensp;
-			<img class="card-img-top img-fluid" src="admin/'.$p['imagem'].'" style="width:850px; height:400px;">
-			&ensp;
-            <p class="card-text">'."<h4>Descrição: </h4>".' '.$p['descricao'].'</p>
-			&ensp;
-            <h5>Preco: '.$p['preco'].'€</h5>
-			&ensp;
-			<h5>Viagens restantes: '.$p['stock'].'</h5>
-               ';
-                //if ($p['imagem']!=null){
-                //echo'<img class="card-img-top img-fluid" src="admin/'.$p['imagem'].'" style="width:900px; height:auto;">';
-               //} 
-               //echo'<p>Stock em loja: '.$p['stock'].'</p>';
-			   
-			   
-			   /*echo '<form action="insereCarrinho.php?id=<?=$id;?>" method="post" enctype="multipart/form-data">';
-               echo '<div class="form-group">';  
-			   echo '<input type="hidden" name="idproduto" class="form-control" value= '. $p['produtoID']. '>';
-               echo '<input type="numeric" name="qte" class="form-control">';
-               echo '</div>';
-               echo '<input type="submit" value="Guardar" class="btn btn-primary">';
-               echo '</form>';
-                
-               //if($p['stock'] >0){
-               //echo' <a href="insereCarrinho.php?id='.$p['produtoID'].'"><button type="button" class="btn btn-primary"> <i class="fas fa-cart-plus"></i></button></a>';
-              //}*/
+			$sql_2 = "SELECT * FROM categoria WHERE categoriaID='$id'";
+            $produtos = $conexao->query($sql);
+			$categorias = $conexao->query($sql_2);
+            $p = $produtos->fetch_assoc();
+			$c = $categorias->fetch_assoc();
+			echo'
+
+        <div class="portfolio-details-container">
+
+          <div class="owl-carousel portfolio-details-carousel">
+            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
+            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
+            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
+          </div>
+
+          <div class="portfolio-info">
+            <h3>'.$p['produtoNome'].'</h3>
+            <ul>
+              <li><strong>País</strong>: '.$c['CategoriaNome'].'</li>
+              <li><strong>Preço</strong>: '.$p['preco'].' €</li>
+              <li><strong>Viagens restantes</strong>: '.$p['stock'].'</li>
+              <li>';
 			  
 			  if (isset($_SESSION['idutilizador'])){
-                         echo '<br><a href="confirmacaoCompra.php?acao=add&id='.$p['produtoID'].'"><button type="button" class="btn btn-primary"> &emsp;<i class="fas fa-cart-plus"></i>&emsp;</button></a>';
-					      }
-              echo'
-            </div> </div>';
-             }     
-        $conexao->close();
-        ?>
-
-
+				  
+                         echo '<br><a href="confirmacaoCompra.php?acao=add&id='.$p['produtoID'].'"><center><button type="button" class="btn btn-primary"> &emsp;&emsp;&emsp;&emsp;<i class="fas fa-cart-plus"></i>&emsp;&emsp;&emsp;&emsp;</button></center></a>';
+				}
+						  
+			echo'
+			  
+			  </li>
+            </ul>
+          </div>
 
         </div>
-        <!-- /.row -->
 
-      </div>      
-      <!-- /.col-lg-9 -->
-     </div>
-    <!-- /.row --> 
-  </div>
-  <br></br>
-  <!-- /.container -->
-  </div>
-  </section>
-  
-  
+        <div class="portfolio-description">
+          <h2>Descrição</h2>
+          <p>'.$p['descricao'].'</p>
+        </div>
+		';
+		?>
+      </div>
+    </section><!-- End Portfolio Details Section -->
+
+  </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
-  <br></br><br></br><br>
     <div class="footer-top">
       <div class="container">
         <div class="row">
@@ -224,29 +236,42 @@
   </footer><!-- End Footer -->
 
 
-  <div id="id01" class="modal">
-  
-  <form class="modal-content animate" action="validaLogin.php" method="post">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-    <br>
-    <div class="container">
-      <label for="uname"><b>Utilizador</b></label>
-      <input type="text" placeholder="Insira o utilizador" name="uname" required>
-
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Insira a Password" name="psw" required>
+  <!-- Modal -->
+<div class="modal fade" id="modallogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Login</h4>        
+      </div>
+      <div class="modal-body">
+        <form class="modal-content animate" action="post_login.php" method="post">
+			<div class="container">
+			  <div class="form-group">
+			  <br>
+			  <label for="uname"><b>Email:</b></label>
+			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
+              <br></div>			  
+			  <div class="form-group">
+			  <label for="psw"><b>Password:</b></label>
+			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
+			  </div>
+			  
+			  &emsp;
+			  
+			  <div class="form-group text-right">
+			  <button type="submit" class="btn btn-primary">Login</button>
+			  </div>
+			</div>
+		 </form>
+      </div>
+      <div class="modal-footer">
+		<span class="psw">Não está registado?&emsp;<a href="register.php">Registe-se!</a></span>
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         
-      <button type="submit">Login</button>
- 
+	  </div>
     </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancelar</button>
-      <span class="psw">Não está registado <a href="registar.php">Registe-se!</a></span>
-    </div>
-  </form>
+  </div>
 </div>
 
   <!-- Vendor JS Files -->

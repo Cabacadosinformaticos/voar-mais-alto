@@ -145,13 +145,13 @@ echo	'<div id="vendas" class="section">
 	<form role="form">
 	<div class="form-group">
 		<label for="username">Nome completo (que está no cartão)</label>
-		<input type="text" class="form-control" name="username" placeholder="" required="">
+		<input type="text" class="form-control" name="username" placeholder="" required>
 	</div> <!-- form-group.// -->
 
 	<div class="form-group">
 		<label for="cardNumber">Número do cartão</label>
 		<div class="input-group">
-			<input type="text" class="form-control" name="cardNumber" placeholder="">
+			<input type="text" class="form-control" name="cardNumber" placeholder="" required>
 			<div class="input-group-append">
 				<span class="input-group-text text-muted">
 					<i class="fab fa-cc-visa"></i>   <i class="fab fa-cc-amex"></i>   
@@ -166,15 +166,15 @@ echo	'<div id="vendas" class="section">
 	        <div class="form-group">
 	            <label><span class="hidden-xs">Data de validade</span> </label>
 	        	<div class="input-group">
-	        		<input type="number" class="form-control" placeholder="MM" name="">
-		            <input type="number" class="form-control" placeholder="YY" name="">
+	        		<input type="number" class="form-control" placeholder="MM" name="" required>
+		            <input type="number" class="form-control" placeholder="YY" name="" required>
 	        	</div>
 	        </div>
 	    </div>
 	    <div class="col-sm-4">
 	        <div class="form-group">
 	            <label data-toggle="tooltip" title="" data-original-title="Código de 3 dígitos no verso do cartão">CVV <i class="fa fa-question-circle"></i></label>
-	            <input type="number" class="form-control" required="">
+	            <input type="number" class="form-control" required>
 	        </div> <!-- form-group.// -->
 	    </div>
 	</div> <!-- row.// -->
@@ -224,6 +224,8 @@ echo	'<div id="vendas" class="section">
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="assets/js/vendor/holder.min.js"></script>
+	<script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 </body>

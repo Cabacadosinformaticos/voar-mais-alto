@@ -18,7 +18,6 @@
 
   <!-- Custom styles for this template -->
   <link href="css/detalheProduto.css" rel="stylesheet">
-  <link href="css/shop-item.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   
@@ -42,31 +41,43 @@
 <body>
 <?php
   include 'db/config.php';
+  session_start();
 ?>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand"><h3><n>Voar Mais Alto</n></h3></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Home
-              <span class="sr-only">(current)</span>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-transparent">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo mr-auto">
+        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="index.php">Home</a></li>
+          <li class="drop-down active"><a href="viagens.php">Viagens</a>
+            <ul>
+			<li>
+			<a
+                <?php
+                $sql = "Select * from categoria";
+                $cats =$conexao->query($sql);
+                if ($cats->num_rows >0) {
+                  while ($c = $cats->fetch_assoc()){
+                    $cat=$c['CategoriaID'];
+                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  }
+                }
+				?>
             </a>
+			</li>
+			</ul>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="viagens.php">Viagens</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="servicos.php">Serviços</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sobrenos.php">Sobre nós</a>
-          </li>
+          <li><a href="servicos.php">Serviços</a></li>
+          <li><a href="sobrenos.php">Sobre Nós</a></li>
+          <li><a href="#footer">Contactos</a></li>
 		  
 		  <?php		  
 		  //echo $_SESSION['utilizador'];
@@ -80,17 +91,30 @@
 			  echo '</li>';
 		  }	  
 		  ?>
+		  
+		  <?php
+		  //echo $_SESSION['utilizador'];
+		  if (isset($_SESSION['utilizador'])){
+			  
+			if($_SESSION['tipo']=='admin')
+			{
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+            }
+			
+		  }
+		  ?>
+
         </ul>
-      </div>
+      </nav><!-- .nav-menu -->
+
     </div>
-  </nav>
+  </header><!-- End Header -->
+  
+  <main id="main">
 
   <!-- Page Content -->
   <section id="hero">
     <div class="hero-container" data-aos="fade-up">
-  
-
-
 
         <?php 
   $id = $_GET['id'];
@@ -105,7 +129,7 @@
       <aside class="col-sm-4 border-right">
   <article class="gallery-wrap"> 
   <div class="img-big-wrap">
-    <div> <a href="detalheProduto.php?acao=add&id='.$p['produtoID'].'"><img src="admin/'.$p['imagem'].'" style="width:390px; height:200px;"></a></div>
+    <div> <a href="detalheProduto.php?acao=add&id='.$p['produtoID'].'"><img src="admin/'.$p['imagem'].'" style="width:380px; height:200px;"></a></div>
   </div> <!-- slider-product.// -->
   </article> 
       </aside>
@@ -249,17 +273,43 @@
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-// Get the modal
-var modal = document.getElementById('id01');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
+  <!-- Modal -->
+<div class="modal fade" id="modallogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Login</h4>        
+      </div>
+      <div class="modal-body">
+        <form class="modal-content animate" action="post_login.php" method="post">
+			<div class="container">
+			  <div class="form-group">
+			  <br>
+			  <label for="uname"><b>Email:</b></label>
+			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
+              <br></div>			  
+			  <div class="form-group">
+			  <label for="psw"><b>Password:</b></label>
+			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
+			  </div>
+			  
+			  &emsp;
+			  
+			  <div class="form-group text-right">
+			  <button type="submit" class="btn btn-primary">Login</button>
+			  </div>
+			</div>
+		 </form>
+      </div>
+      <div class="modal-footer">
+		<span class="psw">Não está registado?&emsp;<a href="register.php">Registe-se!</a></span>
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+	  </div>
+    </div>
+  </div>
+</div>
 
 
 </body>
