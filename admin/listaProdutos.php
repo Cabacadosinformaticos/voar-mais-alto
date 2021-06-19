@@ -47,6 +47,9 @@
           <li class="nav-item">
             <a class="nav-link" href="listaUtilizadores.php">Utilizadores</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="listaProdutosVendidos.php">Vendas</a>
+          </li>
 		  <li class="nav-item">
             <a class="nav-link" href="../index.php"><b>Consultar o site</b></a>
          </li>

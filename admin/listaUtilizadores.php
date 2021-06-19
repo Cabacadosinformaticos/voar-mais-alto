@@ -47,6 +47,9 @@
           <li class="nav-item active">
             <a class="nav-link" href="listaUtilizadores.php">Utilizadores</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="listaProdutosVendidos.php">Vendas</a>
+          </li>
 		  <li class="nav-item">
             <a class="nav-link" href="../index.php"><b>Consultar o site</b></a>
          </li>
@@ -94,21 +97,16 @@
                 }
                 ?>
         </div>
-        <br>
-        <div class="row">
-           <a href="inserirUtilizadores.php"><center><button type="button" class="btn btn-primary">Inserir um novo utilizador</button></center></a>     
-        </div>
 		&emsp;
         <div class="row">
           <table class="table table-hover table-bordered">
             <thead class="bg-light">
             <tr>
-                <td>Nome </td>
-                <td>E-mail </td>
-				<td>Morada</td>
-				<td>Telefone</td>
-                <td>Password </td>
-                <td>Tipo </td>
+                <td><center>Nome</center></td>
+                <td><center>E-mail</center></td>
+				<td><center>Morada</center></td>
+				<td><center>Telemóvel</center></td>
+                <td><center>Tipo</center></td>
             </tr>
             </thead>
             <tbody>
@@ -119,16 +117,11 @@
               while ($p = $login->fetch_assoc()){     
                 echo'
                 <tr>
-                    <td>'.$p['utilizador'].' </td>
-					<td>'.$p['email'].' </td>
-                    <td>'.$p['morada'].' </td>
-                    <td>'.$p['telefone'].' </td>
-                    <td>'.$p['password'].' </td>
-                    <td>'.$p['tipo'].' </td>
-                    
-					<td><a href="alterarUtilizador.php?id='.$p['id'].'"><center><button type="button" class="btn btn-primary">Editar</button></center></a></td>
-                    <td><a onClick=\'javascript: return confirm ("Tem a certeza que deseja eliminar o registo?");\' href="eliminarUtilizador.php?id='.$p['id'].'"><center><button type="button" class="btn btn-secondary">Eliminar</button></center></a></td>
-                 
+                    <td><center>'.$p['utilizador'].'</center></td>
+					<td><center>'.$p['email'].'</center></td>
+                    <td><center>'.$p['morada'].'</center></td>
+                    <td><center>'.$p['telefone'].'</center></td>
+                    <td><center>'.$p['tipo'].'</center></td>
 				 </tr>';
               }
             }
