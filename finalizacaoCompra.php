@@ -1,5 +1,30 @@
+<?php
+session_start();
+include 'db/config.php';
+
+if (!isset($_SESSION['idutilizador'])) {
+    header('Location: index.php');
+    exit;
+}
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: viagens.php');
+    exit;
+}
+$id = (int)$_GET['id'];
+$stmt = mysqli_prepare($conexao, "SELECT * FROM produto WHERE produtoID=?");
+mysqli_stmt_bind_param($stmt, 'i', $id);
+mysqli_stmt_execute($stmt);
+$produtos = mysqli_stmt_get_result($stmt);
+if ($produtos->num_rows == 0) {
+    header('Location: viagens.php');
+    exit;
+}
+$p = mysqli_fetch_assoc($produtos);
+mysqli_stmt_close($stmt);
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
 
@@ -9,13 +34,13 @@
   <meta name="author" content="Tiago Cabaça">
 
   <title>Agência de viagens - Voar Mais Alto</title>
-  
+
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
 
 	<!-- Google font -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
- 
+
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
 	<!-- Bootstrap -->
@@ -24,14 +49,9 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="css/finalizacao_compra.css" />
 
-
+</head>
 
 <body style="background-color:#ccddff">
-<?php
-  include 'db/config.php';
-  session_start();
-  
-?>
 
   <div id="vendas" class="section">
 		<div class="section-center">
@@ -40,61 +60,63 @@
 					<div class="col-md-7 col-md-push-5">
 						<div class="vendas-cta">
 							<h1>Insira os dados para a reserva</h1>
-							<p>Por favor, insira seguidamente os dados requesitados para poder seguir para o pagamento</p>
+							<p>Por favor, insira seguidamente os dados requisitados para poder seguir para o pagamento</p>
 						</div>
 					</div>
 					<div class="col-md-4 col-md-pull-7">
 						<div class="vendas-form">
-							<form method="post" action="insereCompra.php">
-								
+							<form method="post" action="insereCompra.php" id="formReserva">
+								<input type="hidden" name="csrf_token" value="<?=e(csrf_token());?>">
+								<input type="hidden" name="idproduto" value="<?=(int)$p['produtoID'];?>">
+
 								<div class="row">
 									<div class="col-sm-6">
 										<div class="form-group">
-											<span class="form-label">Check In</span>
-											<input class="form-control" name="checkin" type="date" min="2021-07-01" required>
+											<label class="form-label" for="checkin">Entrada</label>
+											<input class="form-control" id="checkin" name="checkin" type="date" min="<?=date('Y-m-d');?>" required>
 										</div>
 									</div>
 									<div class="col-sm-6">
 										<div class="form-group">
-											<span class="form-label">Check Out</span>
-											<input class="form-control" name="checkout" type="date" min="2021-07-02" required>
+											<label class="form-label" for="checkout">Saída</label>
+											<input class="form-control" id="checkout" name="checkout" type="date" min="<?=date('Y-m-d', strtotime('+1 day'));?>" required>
 										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
-											<span class="form-label">Quartos</span>
-											<select name="quartos" class="form-control">
-											
+											<label class="form-label" for="quartos">Quartos</label>
+											<select id="quartos" name="quartos" class="form-control">
+
 												<option value="1">1</option>
 												<option value="2">2</option>
-												
+
 											</select>
 											<span class="select-arrow"></span>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="form-group">
-											<span class="form-label">Adultos</span>
-											<select name="adultos" class="form-control">
-											
+											<label class="form-label" for="adultos">Adultos</label>
+											<select id="adultos" name="adultos" class="form-control">
+
 												<option value="1">1</option>
 												<option value="2">2</option>
-												
+
 											</select>
 											<span class="select-arrow"></span>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="form-group">
-											<span class="form-label">Crianças</span>
-											<select name="criancas" class="form-control">
-												
+											<label class="form-label" for="criancas">Crianças</label>
+											<select id="criancas" name="criancas" class="form-control">
+
 												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
-												
+
 											</select>
 											<span class="select-arrow"></span>
 										</div>
@@ -102,7 +124,8 @@
 								</div>
 								<div class="form-btn">
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Avançar para o pagamento</button>
-									
+									<a href="detalheProduto.php?id=<?=(int)$p['produtoID'];?>" class="btn btn-secondary">Voltar</a>
+
 
 								</div>
 							</form>
@@ -119,7 +142,7 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-     
+
       <div class="modal-body">
       <article class="card">
 <div class="card-body p-5">
@@ -133,12 +156,11 @@
 		<i class="fab fa-paypal"></i> Paypal</a></li>
 	<li class="nav-item">
 		<a class="nav-link" data-toggle="pill" href="#nav-tab-bank">
-		<i class="fa fa-university"></i> Tranferência Bancária</a></li>
+		<i class="fa fa-university"></i> Transferência Bancária</a></li>
 </ul>
 
 <div class="tab-content">
 <div class="tab-pane fade show active" id="nav-tab-card">
-	<form role="form">
 	<div class="form-group">
 		<label for="username">Nome completo (que está no cartão)</label>
 		<input type="text" class="form-control" name="username" placeholder="" required>
@@ -150,8 +172,8 @@
 			<input type="text" class="form-control" name="cardNumber" placeholder="" required>
 			<div class="input-group-append">
 				<span class="input-group-text text-muted">
-					<i class="fab fa-cc-visa"></i>   <i class="fab fa-cc-amex"></i>   
-					<i class="fab fa-cc-mastercard"></i> 
+					<i class="fab fa-cc-visa"></i>   <i class="fab fa-cc-amex"></i>
+					<i class="fab fa-cc-mastercard"></i>
 				</span>
 			</div>
 		</div>
@@ -175,18 +197,10 @@
 	    </div>
 	</div> <!-- row.// -->
 	<?php
-	$id = $_GET['id'];
-	$sql = "SELECT * FROM produto WHERE produtoID='$id'";
-	$produtos = $conexao->query($sql);
-	$p = $produtos->fetch_assoc();
-  
 	if (isset($_SESSION['idutilizador'])){
-		
-    echo '<a href="insereCompra.php?acao=add&id='.$p['produtoID'].'"><button  class="subscribe btn btn-primary btn-block" type="button"> Comprar </button></a>';
-	
+    echo '<button type="submit" form="formReserva" class="subscribe btn btn-primary btn-block"> Comprar </button>';
 	}
 	?>
-	</form>
 </div> <!-- tab-pane.// -->
 <div class="tab-pane fade" id="nav-tab-paypal">
 <p><center>Paypal é a maneira mais fácil de pagar online</center></p>
@@ -217,10 +231,9 @@
 </article> <!-- card.// -->
 
 
-	</aside>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
       </div>
     </div>
 
@@ -228,17 +241,8 @@
 </div>
 
 	<!-- Bootstrap core JavaScript -->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script src="assets/js/vendor/jquery-slim.min.js"></script>
-    <script src="assets/js/vendor/popper.min.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
-    <script src="assets/js/vendor/holder.min.js"></script>
-	<script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
