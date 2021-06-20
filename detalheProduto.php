@@ -41,7 +41,7 @@
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <h1 class="text-light"><a href="index.php"><span>Voar Mais Alto</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -75,7 +75,13 @@
 		  //echo $_SESSION['utilizador'];
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+					<ul>
+					
+					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
+					
+					</ul>
+					</li>';
 			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
@@ -111,7 +117,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <h2>Detalhes da Viagem</h2>
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="viagens.php">Viagens</a></li>
             <li>Detalhes da Viagem</li>
           </ol>
@@ -125,13 +131,9 @@
       <div class="container">
 	  <?php
             $id = $_GET['id'];
-			$id_2 = $_GET['id'];
             $sql = "SELECT * FROM produto WHERE produtoID='$id'";
-			$sql_2 = "SELECT * FROM categoria WHERE categoriaID='$id'";
             $produtos = $conexao->query($sql);
-			$categorias = $conexao->query($sql_2);
             $p = $produtos->fetch_assoc();
-			$c = $categorias->fetch_assoc();
 			echo'
 
         <div class="portfolio-details-container">
@@ -145,7 +147,6 @@
           <div class="portfolio-info">
             <h3>'.$p['produtoNome'].'</h3>
             <ul>
-              <li><strong>País</strong>: '.$c['CategoriaNome'].'</li>
               <li><strong>Preço</strong>: '.$p['preco'].' €</li>
               <li><strong>Viagens restantes</strong>: '.$p['stock'].'</li>
               <li>';

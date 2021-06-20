@@ -2,7 +2,7 @@
     $servidor='localhost';
     $utilizador ='root';
     $password ='';
-    $basededados ='bd_voarmaisalto_melhoramentos';
+    $basededados ='bd_voarmaisalto';
 
     $conexao=mysqli_connect($servidor, $utilizador, $password, $basededados);
 

@@ -49,7 +49,7 @@
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <h1 class="text-light"><a href="index.php"><span>Voar Mais Alto</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -83,7 +83,13 @@
 		  //echo $_SESSION['utilizador'];
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+					<ul>
+					
+					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
+					
+					</ul>
+					</li>';
 			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
@@ -109,8 +115,6 @@
 
     </div>
   </header><!-- End Header -->
-  
-  <main id="main">
 
   <!-- Page Content -->
   <section id="hero">
@@ -150,7 +154,7 @@
 
   
     <hr>
-    <a href="finalizacaoCompra.php" class="btn btn-lg btn-primary text-uppercase"> Continuar com a compra </a>
+    <a href="finalizacaoCompra.php?acao=add&id='.$p['produtoID'].'" class="btn btn-lg btn-primary text-uppercase"> Continuar com a compra </a>
   </article> <!-- card-body.// -->
       </aside> <!-- col.// -->
     </div> <!-- row.// -->
@@ -163,8 +167,6 @@
 
   </div>
   </section>
-  
-  
 
   <!-- ======= Footer ======= -->
   <footer id="footer">

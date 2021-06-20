@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16-Jun-2021 às 00:49
+-- Tempo de geração: 20-Jun-2021 às 22:36
 -- Versão do servidor: 10.4.11-MariaDB
 -- versão do PHP: 7.2.30
 
@@ -18,8 +18,44 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `bd_voarmaisalto_melhoramentos`
+-- Banco de dados: `bd_voarmaisalto`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `carrinho`
+--
+
+CREATE TABLE `carrinho` (
+  `id` int(11) NOT NULL,
+  `idutilizador` int(11) NOT NULL,
+  `idproduto` int(11) NOT NULL,
+  `checkin` varchar(11) NOT NULL,
+  `checkout` varchar(11) NOT NULL,
+  `quartos` int(11) NOT NULL,
+  `adultos` int(11) NOT NULL,
+  `criancas` int(11) NOT NULL,
+  `qte` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `carrinho`
+--
+
+INSERT INTO `carrinho` (`id`, `idutilizador`, `idproduto`, `checkin`, `checkout`, `quartos`, `adultos`, `criancas`, `qte`) VALUES
+(14, 17, 32, '20/06/2021', '22/06/2021', 1, 2, 0, 1),
+(15, 22, 30, '01/07/2021', '02/07/2021', 1, 1, 0, 1),
+(19, 26, 34, '01/07/2021', '02/07/2021', 1, 2, 0, 1),
+(20, 23, 29, '01/07/2021', '07/07/2021', 1, 2, 0, 1),
+(21, 15, 31, '30/06/2021', '12/07/2021', 2, 2, 1, 1),
+(22, 28, 25, '01/07/2021', '05/07/2021', 1, 1, 0, 1),
+(23, 25, 28, '01/07/2021', '09/07/2021', 1, 1, 0, 1),
+(25, 20, 27, '01/07/2021', '08/07/2021', 1, 1, 0, 1),
+(27, 14, 29, '23/06/2021', '01/07/2021', 1, 1, 0, 1),
+(28, 16, 24, '01/07/2021', '02/07/2021', 1, 1, 0, 1),
+(36, 24, 34, '01/07/2021', '17/07/2021', 1, 1, 0, 1),
+(38, 14, 31, '01/07/2021', '22/07/2021', 1, 2, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -86,7 +122,8 @@ INSERT INTO `login` (`id`, `utilizador`, `email`, `morada`, `telefone`, `passwor
 (23, 'Hugo Almeida', 'hugo.almeida@example.com', 'Rua Exemplo, 8, Mafra', 910000000, 'teste123', 'user'),
 (24, 'Inês Moreira', 'ines.moreira@example.com', 'Rua Exemplo, 9, Mafra', 910000000, 'teste123', 'user'),
 (25, 'Joana Pinto', 'joana.pinto@example.com', 'Rua Exemplo, 10, Mafra', 910000000, 'teste123', 'user'),
-(26, 'Luís Carvalho', 'luis.carvalho@example.com', 'Rua Exemplo, 11, Mafra', 910000000, 'teste123', 'user');
+(26, 'Luís Carvalho', 'luis.carvalho@example.com', 'Rua Exemplo, 11, Mafra', 910000000, 'teste123', 'user'),
+(28, 'Marta Ribeiro', 'marta.ribeiro@example.com', 'Rua Exemplo, 12, Mafra', 910000000, 'teste123', 'user');
 
 -- --------------------------------------------------------
 
@@ -101,7 +138,7 @@ CREATE TABLE `produto` (
   `stock` int(11) NOT NULL,
   `imagem` varchar(200) NOT NULL,
   `categoriaID` int(11) NOT NULL,
-  `descricao` varchar(600) NOT NULL
+  `descricao` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -118,11 +155,20 @@ INSERT INTO `produto` (`produtoID`, `produtoNome`, `preco`, `stock`, `imagem`, `
 (31, 'Viagem às Bahamas', 2000, 1, 'img_produtos/Viagem às Bahamas.jpg', 24, 'As Bahamas, com praias quase desertas e enseadas escondidas, garantem a tranquilidade dos visitantes em um paraíso de mais de 700 ilhas e ilhotas. As águas cristalinas têm diferentes tonalidades, desde o turquesa claro ao rosa. Estamos definitivamente no Caribe.'),
 (32, 'Viagem à Argentina', 2100, 7, 'img_produtos/Viagem à Argentina.jpg', 19, 'Terra da vastidão das pampas e da cosmopolita Buenos Aires, do tango e das milongas, dos glaciares da Patagónia (a Terra do Fogo) e do vinho de Mendoza, das Cataratas de Iguazú e de um sem fim de atrativos, naturais e culturais, para quem anda em viagem, a Argentina é um dos destinos mais diversificados da América do Sul.'),
 (33, 'Viagem à Tunísia', 2684, 9, 'img_produtos/Viagem à Tunísia.jpg', 15, 'Considerado um dos países mais fáceis de África para viajar, a Tunísia oferece de tudo um pouco. São disso exemplo a arquitetura deslumbrante de Sidi Bou Said, a labiríntica Medina de Tunes, os resorts de Hammamet e Tabarka, a ilha de Djerba, o coliseu de El-Jem, as planícies salgadas de Chott el-Jerid, Douz e o deserto do Sahara, e Sidi Ali el-Mekki, considerada por alguns a mais bonita praia da Tunísia. Atrações que ajudam a tornar as viagens à Tunísia experiências singulares.'),
-(34, 'Viagem ao Brasil', 1654, 8, 'img_produtos/Viagem ao Brasil.jpg', 22, 'O Brasil é um país imenso, sensual, extraordinário, diversificado. Propício a viagens sem pressas, no Brasil pode conhecer as raízes africanas da Bahia, a paisagem incomparável de lagoas e dunas nos Lençóis Maranhenses, os encantos naturais do Pantanal e da mata atlântica, o santuário ecológico de Fernando de Noronha, os povos indígenas da Amazónia (esse grande pulmão do planeta, maior floresta tropical do mundo que ocupa mais de metade do território do Brasil), as gentes simples do sertão, as praias de areia fina do nordeste e as festas de rua como o carnaval do Rio de Janeiro.');
+(34, 'Viagem ao Brasil', 1654, 8, 'img_produtos/Viagem ao Brasil.jpg', 22, 'O Brasil é um país imenso, sensual, extraordinário, diversificado. Propício a viagens sem pressas, no Brasil pode conhecer as raízes africanas da Bahia, a paisagem incomparável de lagoas e dunas nos Lençóis Maranhenses, os encantos naturais do Pantanal e da mata atlântica, o santuário ecológico de Fernando de Noronha, os povos indígenas da Amazónia (esse grande pulmão do planeta, maior floresta tropical do mundo que ocupa mais de metade do território do Brasil), as gentes simples do sertão, as praias de areia fina do nordeste e as festas de rua como o carnaval do Rio de Janeiro.'),
+(36, 'Viagem á Geórgia', 1500, 2, 'img_produtos/Viagem à Geórgia.jpg', 17, 'Igrejas empoleiradas, torres e castelos a ornamentar o cimo das montanhas, cidades escandalosamente bonitas (como Svaneti e Kazbegi) e outras quase subtropicais, como Batumi, na costa do Mar Negro. Acrescente-se a este magnífico cocktail a irreprimível vontade de bem receber da população georgiana e as diretrizes políticas de apetrechar o país com tudo o que os visitantes precisam, e está encontrado um país imperdível. Para explorar a pé, a cavalo ou de carro.  A capital da Geórgia, Tbilisi, é uma cidade do século XXI, com casas noturnas a piscar o olho ao ocidente, mas não deixa de manter a atmosfera de uma cidade plantada nas antigas encruzilhadas da Eurásia. Uma encruzilhada que lhe garantiu uma história longa e complicada e lhe deixou um conjunto de influências marcantes e uma herança riquíssima da Turquia, Rússia, Pérsia e Ásia Central. Hoje em dia, a Geórgia olha para a Europa como o seu futuro e é o mais ocidental na atmosfera dos três países do Cáucaso.');
 
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices para tabela `carrinho`
+--
+ALTER TABLE `carrinho`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `carrimho_ibfk_1` (`idutilizador`),
+  ADD KEY `carrimho_ibfk_2` (`idproduto`);
 
 --
 -- Índices para tabela `categoria`
@@ -148,6 +194,12 @@ ALTER TABLE `produto`
 --
 
 --
+-- AUTO_INCREMENT de tabela `carrinho`
+--
+ALTER TABLE `carrinho`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
 -- AUTO_INCREMENT de tabela `categoria`
 --
 ALTER TABLE `categoria`
@@ -157,17 +209,24 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de tabela `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `produtoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `produtoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Restrições para despejos de tabelas
 --
+
+--
+-- Limitadores para a tabela `carrinho`
+--
+ALTER TABLE `carrinho`
+  ADD CONSTRAINT `carrinho_ibfk_1` FOREIGN KEY (`idutilizador`) REFERENCES `login` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `carrinho_ibfk_2` FOREIGN KEY (`idproduto`) REFERENCES `produto` (`produtoID`);
 
 --
 -- Limitadores para a tabela `produto`

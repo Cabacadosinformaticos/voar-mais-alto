@@ -8,7 +8,7 @@
   <meta name="description" content="Agencia de viagens">
   <meta name="author" content="Tiago Cabaça">
 
-  <title>Agencia de viagens - Voar Mais Alto</title>
+  <title>Agência de viagens - Voar Mais Alto</title>
   
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -51,7 +51,7 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="index.html">Home</a></li>
+          <li class="active"><a href="index.php">Home</a></li>
           <li class="drop-down"><a href="viagens.php">Viagens</a>
             <ul>
 			<li>
@@ -78,7 +78,13 @@
 		  //echo $_SESSION['utilizador'];
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+					<ul>
+					
+					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
+					
+					</ul>
+					</li>';
 			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
@@ -125,7 +131,7 @@
         <div class="row no-gutters">
           <div class="content col-xl-5 d-flex align-items-stretch" data-aos="fade-up">
             <div class="content">
-              <h3><center>Agencia de viagens <br><b>Voar Mais Alto</b><center></h3>
+              <h3><center>Agência de viagens <br><b>Voar Mais Alto</b><center></h3>
               <p>
                 Como dizemos aos nossos clientes "<b>Vá onde você se sentir mais vivo</b>", estamos sempre um passo á frente, prevenindo quaisquer inconvenientes que possam ter durante a sua viagem.
               </p>
