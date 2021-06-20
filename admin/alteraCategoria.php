@@ -1,24 +1,24 @@
+<?php session_start(); if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'admin') { header('Location: ../index.php'); exit; } ?>
 <?php
-      session_start();
       include '../db/config.php';
-	  if (isset($_SESSION['utilizador']) && $_SESSION['tipo'] == "admin" ){	
-        echo "Utilizador válido";
-     }else{
-		 header('location:../index.php');
-	 }	 
-       $id = $_GET['id'];
+
+       csrf_check();
+
+       $id = (int)$_GET['id'];
        $categoria = $_POST['categoria'];
-      
-       $sql = "update categoria set CategoriaNome='$categoria' where categoriaID='$id'";
-       $resultado = $conexao->query($sql);
+
+       $stmt = mysqli_prepare($conexao, "update categoria set CategoriaNome=? where categoriaID=?");
+       mysqli_stmt_bind_param($stmt, 'si', $categoria, $id);
+       $resultado = mysqli_stmt_execute($stmt);
+       mysqli_stmt_close($stmt);
 
        if($resultado){
         $msg="Registo alterado";
        }else{
            $msg="Não foi possível alterar o registo";
-       } 
+       }
 
-     echo "<script> window.location = 'listaCategorias.php?msg=$msg';</script>";
+  header('Location: listaCategorias.php?msg='.urlencode($msg)); exit;
 
        $conexao ->close();
 ?>

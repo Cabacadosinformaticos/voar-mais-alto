@@ -1,37 +1,41 @@
+<?php session_start(); if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'admin') { header('Location: ../index.php'); exit; } ?>
 <?php
-      session_start();
       include '../db/config.php';
-		  
-	 if (isset($_SESSION['utilizador']) && $_SESSION['tipo'] == "admin" ){	
-        echo "Utilizador válido";
-     }else{
-		 header('location:../index.php');
-	 }	 
-		 
+
+      csrf_check();
+
       $nome = $_POST['produto'];
       $preco = $_POST['preco'];
       $descricao = $_POST['descricao'];
       $stock = $_POST['stock'];
       $cat = $_POST['categoria'];
-      $imagem = $_FILES['imagem']['name'];
+      $imagem = '';
 
-       if($imagem!=''){
+       if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK && $_FILES['imagem']['name'] != ''){
            $pasta ="img_produtos/";
-           if(move_uploaded_file($_FILES['imagem']['tmp_name'], $pasta.$imagem)){
-                $imagem =$pasta.$imagem ;
+           $permitidas = array('jpg', 'jpeg', 'png', 'webp');
+           $ext = strtolower(pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION));
+           $info = @getimagesize($_FILES['imagem']['tmp_name']);
+           if(in_array($ext, $permitidas, true) && $info !== false && $_FILES['imagem']['size'] <= 5 * 1024 * 1024){
+                $novoNome = bin2hex(random_bytes(8)) . '.' . $ext;
+                if(move_uploaded_file($_FILES['imagem']['tmp_name'], $pasta.$novoNome)){
+                     $imagem = $pasta.$novoNome;
+                }
            }
        }
 
-       $sql = "Insert into produto (produtoNome,preco,stock,imagem,categoriaID,descricao) values ('$nome','$preco', '$stock','$imagem','$cat', '$descricao')";
-       $resultado = $conexao->query($sql);
+       $stmt = mysqli_prepare($conexao, "Insert into produto (produtoNome,preco,stock,imagem,categoriaID,descricao) values (?,?,?,?,?,?)");
+       mysqli_stmt_bind_param($stmt, 'sdisis', $nome, $preco, $stock, $imagem, $cat, $descricao);
+       $resultado = mysqli_stmt_execute($stmt);
+       mysqli_stmt_close($stmt);
 
        if($resultado){
         $msg="Registo inserido";
        }else{
            $msg="Erro ao inserir registo";
-       } 
+       }
 
-       echo "<script> window.location='listaProdutos.php?msg=$msg'; </script>";
+  header('Location: listaProdutos.php?msg='.urlencode($msg)); exit;
 
        $conexao ->close();
 ?>
