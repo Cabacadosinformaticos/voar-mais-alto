@@ -1,5 +1,6 @@
+<?php session_start(); include 'db/config.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
 
@@ -34,10 +35,6 @@
 </head>
 
 <body>
-<?php
-  include 'db/config.php';
-  session_start();
-?>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
@@ -54,20 +51,16 @@
           <li><a href="index.php">Home</a></li>
           <li class="drop-down"><a href="viagens.php">Viagens</a>
             <ul>
-			<li>
-			<a
                 <?php
                 $sql = "Select * from categoria";
                 $cats =$conexao->query($sql);
                 if ($cats->num_rows >0) {
                   while ($c = $cats->fetch_assoc()){
                     $cat=$c['CategoriaID'];
-                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  echo'<li><a href="viagens.php?id='.(int)$c['CategoriaID'].'"><center>'.e($c['CategoriaNome']).'</center></a></li>';
                   }
                 }
 				?>
-            </a>
-			</li>
 			</ul>
           </li>
           <li><a href="servicos.php">Serviços</a></li>
@@ -76,16 +69,12 @@
 		  
 		  <?php		  
 		  //echo $_SESSION['utilizador'];
-		  if (isset($_SESSION['utilizador'])){		  
-			  echo '<li class="nav-item">';
-			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+		  if (isset($_SESSION['utilizador'])){
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i> '.e($_SESSION['utilizador']).'</a>
 					<ul>
-					
 					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
-					
 					</ul>
 					</li>';
-			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
 			  echo '<a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a>';
@@ -99,7 +88,7 @@
 			  
 			if($_SESSION['tipo']=='admin')
 			{
-                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaProdutos.php"><b>Backoffice</b></a></li>';
             }
 			
 		  }
@@ -139,7 +128,7 @@
             <div class="count-box">
               <i class="icofont-live-support"></i>
               <span data-toggle="counter-up">463</span>
-              <p><strong>Horas de suporte</strong> forneçidas aos clientes</p>
+              <p><strong>Horas de suporte</strong> fornecidas aos clientes</p>
             </div>
           </div>
 
@@ -147,7 +136,7 @@
             <div class="count-box">
               <i class="icofont-users-alt-5"></i>
               <span data-toggle="counter-up">23</span>
-              <p><strong>Pessoas esforçadas</strong> a trabalhar para o seu sonho</p>
+              <p><strong>Pessoas dedicadas</strong> a trabalhar para o seu sonho</p>
             </div>
           </div>
 
@@ -175,7 +164,7 @@
 
         <div class="section-title" data-aos="fade-in" data-aos-delay="100">
           <h2>Testemunhos</h2>
-          <p>O que esperar das nossas viagens? <br> Confira o que alguns dos nossos clientes acharam das suas experiências depois de viajarem connosco.</p>
+          <p>O que esperar das nossas viagens? <br> Veja o que alguns dos nossos clientes acharam das suas viagens.</p>
         </div>
 
         <div class="owl-carousel testimonials-carousel">
@@ -186,9 +175,9 @@
               A simpatia do povo da Costa Rica e a diversidade de actividades e paisagens que encontramos. A viagem correu muitíssimo bem.
               <i class="bx bxs-quote-alt-right quote-icon-right"></i>
             </p>
-            <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-            <h3>Saul Goodman</h3>
-            <h4>Ceo e Fundador</h4>
+            <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="Rui Carvalho">
+            <h3>Rui Carvalho</h3>
+            <h4>Engenheiro civil</h4>
           </div>
 
           <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
@@ -197,8 +186,8 @@
               A nossa viagem à Turquia correu muito bem e o país revelou-se surpreendente, posso mesmo dizer que superou as nossas expectativas.
               <i class="bx bxs-quote-alt-right quote-icon-right"></i>
             </p>
-            <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-            <h3>Sara Wilsson</h3>
+            <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="Marta Nogueira">
+            <h3>Marta Nogueira</h3>
             <h4>Designer</h4>
           </div>
 
@@ -208,9 +197,9 @@
               Trago na memória a estada no Pacuare Lodge e o facto de não termos acesso a comunicações (telefone e internet), à excepção do lobby, no entanto, é mesmo isso que contribui para que o espaço seja tão especial! As actividades, realçando o rafting foram espectaculares.
               <i class="bx bxs-quote-alt-right quote-icon-right"></i>
             </p>
-            <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-            <h3>Jena Karlis</h3>
-            <h4>Dona de uma loja</h4>
+            <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="Joana Teixeira">
+            <h3>Joana Teixeira</h3>
+            <h4>Proprietária de uma loja</h4>
           </div>
 
           <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
@@ -219,9 +208,9 @@
               Gostei muito de Miami apesar de não ter tido oportunidade de ter explorado tudo como planeado. Notas para futuros clientes, a praia do hotel NOW JADE em Puerto Morelos tem muita rocha o que dificulta muito o gozo pleno da praia.
               <i class="bx bxs-quote-alt-right quote-icon-right"></i>
             </p>
-            <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-            <h3>Matt Brandon</h3>
-            <h4>Freelancer</h4>
+            <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="Pedro Sampaio">
+            <h3>Pedro Sampaio</h3>
+            <h4>Fotógrafo freelancer</h4>
           </div>
 
           <div class="testimonial-item" data-aos="fade-up" data-aos-delay="400">
@@ -230,9 +219,9 @@
               Como sempre, tudo correu perfeitamente superando qualquer expectativa criada! Muitos parabéns para a equipa da Voar Mais Alto!
               <i class="bx bxs-quote-alt-right quote-icon-right"></i>
             </p>
-            <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-            <h3>John Larson</h3>
-            <h4>Empreendedor</h4>
+            <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="Nuno Ferreira">
+            <h3>Nuno Ferreira</h3>
+            <h4>Empresário</h4>
           </div>
 
         </div>
@@ -253,48 +242,30 @@
 
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="fade-up">
-              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt="Ricardo Fonseca"></div>
               <div class="member-info">
-                <h4>Walter White</h4>
-                <span>CEO</span>
-                <div class="social">
-                  <a href=""><i class="icofont-twitter"></i></a>
-                  <a href=""><i class="icofont-facebook"></i></a>
-                  <a href=""><i class="icofont-instagram"></i></a>
-                  <a href=""><i class="icofont-linkedin"></i></a>
-                </div>
+                <h4>Ricardo Fonseca</h4>
+                <span>Fundador e diretor</span>
               </div>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="fade-up" data-aos-delay="150">
-              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt="Inês Matos"></div>
               <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Gerente de Produtos</span>
-                <div class="social">
-                  <a href=""><i class="icofont-twitter"></i></a>
-                  <a href=""><i class="icofont-facebook"></i></a>
-                  <a href=""><i class="icofont-instagram"></i></a>
-                  <a href=""><i class="icofont-linkedin"></i></a>
-                </div>
+                <h4>Inês Matos</h4>
+                <span>Gestora de viagens</span>
               </div>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-6">
             <div class="member" data-aos="fade-up" data-aos-delay="300">
-              <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt="Miguel Antunes"></div>
               <div class="member-info">
-                <h4>William Anderson</h4>
-                <span>Chefe de Tecnologia</span>
-                <div class="social">
-                  <a href=""><i class="icofont-twitter"></i></a>
-                  <a href=""><i class="icofont-facebook"></i></a>
-                  <a href=""><i class="icofont-instagram"></i></a>
-                  <a href=""><i class="icofont-linkedin"></i></a>
-                </div>
+                <h4>Miguel Antunes</h4>
+                <span>Apoio ao cliente</span>
               </div>
             </div>
           </div>
@@ -318,7 +289,7 @@
             <div class="info-box mb-4">
               <i class="bx bx-map"></i>
               <h3>O nosso endereço</h3>
-              <p>Rua Exemplo, 1, 2640-000 Mafra</p>
+              <p>Rua Exemplo 1, 2640-000 Mafra</p>
             </div>
           </div>
 
@@ -359,15 +330,15 @@
                 </div>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Assunto" data-rule="minlen:4" data-msg="Por favor escreva uma assunto com um mínimo de 5 caracteres." />
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Assunto" data-rule="minlen:4" data-msg="Por favor escreva um assunto com um mínimo de 4 caracteres." />
                 <div class="validate"></div>
               </div>
               <div class="form-group">
-                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Por favor esvreva algo para nós." placeholder="Mensagem"></textarea>
+                <textarea class="form-control" name="message" id="message" rows="5" data-rule="required" data-msg="Por favor escreva algo para nós." placeholder="Mensagem"></textarea>
                 <div class="validate"></div>
               </div>
               <div class="mb-3">
-                <div class="loading">Carregando...</div>
+                <div class="loading">A enviar...</div>
                 <div class="error-message"></div>
                 <div class="sent-message">A sua mensagem foi enviada. Muito obrigado!</div>
               </div>
@@ -393,7 +364,7 @@
               <h3>Voar Mais Alto</h3>
               <p class="pb-3"><em>Aqui estão algumas informações para nos poder contactar caso tenha alguma dúvida.</em></p>
               <p>
-                Rua Exemplo, 1 <br>
+                Rua Exemplo 1 <br>
                 2640-000 Mafra<br><br>
                 <strong>Telefone:</strong> +351 210 000 000<br>
                 <strong>Email:</strong> geral@voarmaisalto.pt<br>
@@ -408,7 +379,7 @@
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
+          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
             <h4>Links úteis</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
@@ -419,15 +390,11 @@
             </ul>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-            
-          </div>
-
           <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Assine a nossa Newsletter</h4>
             <p>Fique por dentro de todas as nossas novidades, ofertas e descontos.</p>
             <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
+              <input type="email" name="email"><input type="submit" value="Subscrever">
             </form>
 
           </div>
@@ -452,30 +419,24 @@
         <h4 class="modal-title" id="exampleModalLabel">Login</h4>        
       </div>
       <div class="modal-body">
-        <form class="modal-content animate" action="post_login.php" method="post">
-			<div class="container">
-			  <div class="form-group">
-			  <br>
-			  <label for="uname"><b>Email:</b></label>
-			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
-              <br></div>			  
-			  <div class="form-group">
-			  <label for="psw"><b>Password:</b></label>
-			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
-			  </div>
-			  
-			  <div class="form-group text-right">
-			  <button type="submit" class="btn btn-primary">Login</button>
-			  </div>
-			</div>
-		 </form>
+        <form action="post_login.php" method="post">
+          <div class="form-group">
+            <label for="post_email">Email</label>
+            <input type="email" class="form-control" id="post_email" name="post_email" placeholder="Insira o email" required>
+          </div>
+          <div class="form-group">
+            <label for="post_password">Password</label>
+            <input type="password" class="form-control" id="post_password" name="post_password" placeholder="Insira a password" required>
+          </div>
+          <div class="form-group text-right mb-0">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
       </div>
-      <div class="modal-footer">
-		<span class="psw">Não está registado ?&emsp;<a href="register.php">Registe-se!</a></span>
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        
-	  </div>
+      <div class="modal-footer justify-content-between">
+        <span class="psw">Não está registado? <a href="register.php">Registe-se!</a></span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -503,4 +464,4 @@
 
 </body>
 
-</html>
+</html>

@@ -1,5 +1,25 @@
+<?php
+session_start();
+include 'db/config.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: viagens.php');
+    exit;
+}
+$id = (int)$_GET['id'];
+$stmt = mysqli_prepare($conexao, "SELECT * FROM produto WHERE produtoID=?");
+mysqli_stmt_bind_param($stmt, 'i', $id);
+mysqli_stmt_execute($stmt);
+$produtos = mysqli_stmt_get_result($stmt);
+if ($produtos->num_rows == 0) {
+    header('Location: viagens.php');
+    exit;
+}
+$p = mysqli_fetch_assoc($produtos);
+mysqli_stmt_close($stmt);
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
 
@@ -31,10 +51,6 @@
 </head>
 
 <body>
-<?php
-  include 'db/config.php';
-  session_start();
-?>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
@@ -51,42 +67,31 @@
           <li><a href="index.php">Home</a></li>
           <li class="drop-down active"><a href="viagens.php">Viagens</a>
             <ul>
-			<li>
-			<a
                 <?php
                 $sql = "Select * from categoria";
                 $cats =$conexao->query($sql);
                 if ($cats->num_rows >0) {
                   while ($c = $cats->fetch_assoc()){
                     $cat=$c['CategoriaID'];
-                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  echo'<li><a href="viagens.php?id='.(int)$c['CategoriaID'].'"><center>'.e($c['CategoriaNome']).'</center></a></li>';
                   }
                 }
 				?>
-            </a>
-			</li>
 			</ul>
           </li>
           <li><a href="servicos.php">Serviços</a></li>
           <li><a href="sobrenos.php">Sobre Nós</a></li>
           <li><a href="#footer">Contactos</a></li>
 		  
-		  <?php		  
-		  //echo $_SESSION['utilizador'];
-		  if (isset($_SESSION['utilizador'])){		  
-			  echo '<li class="nav-item">';
-			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+		  <?php
+		  if (isset($_SESSION['utilizador'])){
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i> '.e($_SESSION['utilizador']).'</a>
 					<ul>
-					
 					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
-					
 					</ul>
 					</li>';
-			  echo '</li>';		  
 		  }else{
-			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a>';
-			  echo '</li>';
+			  echo '<li class="nav-item"><a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a></li>';
 		  }	  
 		  ?>
 		  
@@ -96,7 +101,7 @@
 			  
 			if($_SESSION['tipo']=='admin')
 			{
-                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaProdutos.php"><b>Backoffice</b></a></li>';
             }
 			
 		  }
@@ -130,30 +135,24 @@
     <section class="portfolio-details">
       <div class="container">
 	  <?php
-            $id = $_GET['id'];
-            $sql = "SELECT * FROM produto WHERE produtoID='$id'";
-            $produtos = $conexao->query($sql);
-            $p = $produtos->fetch_assoc();
 			echo'
 
         <div class="portfolio-details-container">
 
-          <div class="owl-carousel portfolio-details-carousel">
-            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
-            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
-            <img src="admin/'.$p['imagem'].'" class="img-fluid" alt="">
-          </div>
+          <img src="admin/'.e($p['imagem']).'" class="img-fluid" alt="'.e($p['produtoNome']).'">
 
           <div class="portfolio-info">
-            <h3>'.$p['produtoNome'].'</h3>
+            <h3>'.e($p['produtoNome']).'</h3>
             <ul>
-              <li><strong>Preço</strong>: '.$p['preco'].' €</li>
-              <li><strong>Viagens restantes</strong>: '.$p['stock'].'</li>
+              <li><strong>Preço</strong>: '.e($p['preco']).' €</li>
+              <li><strong>Viagens restantes</strong>: '.e($p['stock']).'</li>
               <li>';
 			  
 			  if (isset($_SESSION['idutilizador'])){
 				  
-                         echo '<br><a href="confirmacaoCompra.php?acao=add&id='.$p['produtoID'].'"><center><button type="button" class="btn btn-primary"> &emsp;&emsp;&emsp;&emsp;<i class="fas fa-cart-plus"></i>&emsp;&emsp;&emsp;&emsp;</button></center></a>';
+                         echo '<br><a href="confirmacaoCompra.php?acao=add&id='.(int)$p['produtoID'].'"><center><button type="button" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Comprar</button></center></a>';
+				}else{
+                         echo '<br><center><small>Inicie sessão para comprar</small></center>';
 				}
 						  
 			echo'
@@ -166,7 +165,7 @@
 
         <div class="portfolio-description">
           <h2>Descrição</h2>
-          <p>'.$p['descricao'].'</p>
+          <p>'.e($p['descricao']).'</p>
         </div>
 		';
 		?>
@@ -186,7 +185,7 @@
               <h3>Voar Mais Alto</h3>
               <p class="pb-3"><em>Aqui estão algumas informações para nos poder contactar caso tenha alguma dúvida.</em></p>
               <p>
-                Rua Exemplo, 1 <br>
+                Rua Exemplo 1 <br>
                 2640-000 Mafra<br><br>
                 <strong>Telefone:</strong> +351 210 000 000<br>
                 <strong>Email:</strong> geral@voarmaisalto.pt<br>
@@ -201,7 +200,7 @@
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
+          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
             <h4>Links úteis</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
@@ -212,15 +211,11 @@
             </ul>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-            
-          </div>
-
           <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Assine a nossa Newsletter</h4>
             <p>Fique por dentro de todas as nossas novidades, ofertas e descontos.</p>
             <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
+              <input type="email" name="email"><input type="submit" value="Subscrever">
             </form>
 
           </div>
@@ -249,12 +244,12 @@
 			<div class="container">
 			  <div class="form-group">
 			  <br>
-			  <label for="uname"><b>Email:</b></label>
-			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
+			  <label for="post_email"><b>Email:</b></label>
+			  <input type="email" class="form-control" id="post_email" name="post_email" placeholder="Insira o email" required>
               <br></div>			  
 			  <div class="form-group">
-			  <label for="psw"><b>Password:</b></label>
-			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
+			  <label for="post_password"><b>Password:</b></label>
+			  <input type="password" class="form-control" id="post_password" name="post_password" placeholder="Insira a Password" required>
 			  </div>
 			  
 			  &emsp;
@@ -268,7 +263,7 @@
       <div class="modal-footer">
 		<span class="psw">Não está registado?&emsp;<a href="register.php">Registe-se!</a></span>
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         
 	  </div>
     </div>

@@ -1,5 +1,6 @@
+<?php session_start(); include 'db/config.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
 
@@ -34,10 +35,6 @@
 </head>
 
 <body>
-<?php
-  include 'db/config.php';
-  session_start();
-?>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
@@ -54,20 +51,16 @@
           <li><a href="index.php">Home</a></li>
           <li class="drop-down"><a href="viagens.php">Viagens</a>
             <ul>
-			<li>
-			<a
                 <?php
                 $sql = "Select * from categoria";
                 $cats =$conexao->query($sql);
                 if ($cats->num_rows >0) {
                   while ($c = $cats->fetch_assoc()){
                     $cat=$c['CategoriaID'];
-                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  echo'<li><a href="viagens.php?id='.(int)$c['CategoriaID'].'"><center>'.e($c['CategoriaNome']).'</center></a></li>';
                   }
                 }
 				?>
-            </a>
-			</li>
 			</ul>
           </li>
           <li class="active"><a href="servicos.php">Serviços</a></li>
@@ -76,16 +69,12 @@
 		  
 		  <?php		  
 		  //echo $_SESSION['utilizador'];
-		  if (isset($_SESSION['utilizador'])){		  
-			  echo '<li class="nav-item">';
-			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+		  if (isset($_SESSION['utilizador'])){
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i> '.e($_SESSION['utilizador']).'</a>
 					<ul>
-					
 					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
-					
 					</ul>
 					</li>';
-			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
 			  echo '<a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a>';
@@ -99,7 +88,7 @@
 			  
 			if($_SESSION['tipo']=='admin')
 			{
-                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaProdutos.php"><b>Backoffice</b></a></li>';
             }
 			
 		  }
@@ -120,9 +109,9 @@
         <div class="row no-gutters">
           <div class="content col-xl-5 d-flex align-items-stretch" data-aos="fade-up">
             <div class="content">
-              <h3><center>Agência de viagens <br><b>Voar Mais Alto</b><center></h3>
+              <h3><center>Agência de viagens <br><b>Voar Mais Alto</b></center></h3>
               <p>
-                Como dizemos aos nossos clientes "<b>Vá onde você se sentir mais vivo</b>", estamos sempre um passo á frente, prevenindo quaisquer inconvenientes que possam ter durante a sua viagem.
+                Como dizemos aos nossos clientes "<b>Vá onde se sentir mais vivo</b>", estamos sempre um passo à frente, prevenindo quaisquer inconvenientes que possam ter durante a sua viagem.
               </p>
             </div>
           </div>
@@ -132,17 +121,17 @@
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
                   <i class="bx bx-images"></i>
                   <h4>Registe momentos</h4>
-                  <p>Crie e viva momentos que nunca se irá esqueçer.</p>
+                  <p>Crie e viva momentos que nunca vai esquecer.</p>
                 </div>
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
                   <i class="bx bx-shield"></i>
                   <h4>Seguro</h4>
-                  <p>Emitir uma apólice de viagem hoje em dia não é mais difícil do que reservar um quarto de hotel ou passagens aéreas.</p>
+                  <p>Hoje em dia, emitir uma apólice de viagem não é mais difícil do que reservar um quarto de hotel ou um voo.</p>
                 </div>
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="300">
                   <i class="bx bx-receipt"></i>
                   <h4>Viaje com conforto</h4>
-                  <p>É melhor cuidar das passagens aéreas com antecedência, mas não se precisa de preocupar com isso, pois cuidamos disso por você.</p>
+                  <p>É melhor tratar dos voos com antecedência, mas não precisa de se preocupar: tratamos disso por si.</p>
                 </div>
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="400">
                   <i class="bx bx-cube-alt"></i>
@@ -163,7 +152,7 @@
 
         <div class="section-title" data-aos="fade-in" data-aos-delay="100">
           <h2>Serviços</h2>
-          <p>A nossa empresa fornece uma panóplia de serviços para poder satisfazer até os clientes mais exigentes.</p>
+          <p>A nossa empresa oferece vários serviços para satisfazer até os clientes mais exigentes.</p>
         </div>
 
         <div class="row">
@@ -171,7 +160,7 @@
             <div class="icon-box" data-aos="fade-up">
               <div class="icon"><i class="bx bxl-dribbble"></i></div>
               <h4 class="title"><a href="">Parcerias a nível mundial</a></h4>
-              <p class="description">A nossa empresa tem parcerias com vários hóteis e empresas de transporte.</p>
+              <p class="description">A nossa empresa tem parcerias com vários hotéis e empresas de transporte.</p>
             </div>
           </div>
 
@@ -179,7 +168,7 @@
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
               <div class="icon"><i class="bx bx-file"></i></div>
               <h4 class="title"><a href="">Seguros de viagem</a></h4>
-              <p class="description">Ofereçemos vários tipos de seguros aos nossos clientes, pois o mais importante para nós é a sua segurança!</p>
+              <p class="description">Oferecemos vários tipos de seguros aos nossos clientes, pois o mais importante para nós é a sua segurança!</p>
             </div>
           </div>
 
@@ -187,7 +176,7 @@
             <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
               <div class="icon"><i class="bx bx-tachometer"></i></div>
               <h4 class="title"><a href="">Rapidez</a></h4>
-              <p class="description">Tentamos sempre solucionar os problemas o mais rápido possivel usando todos os métodos que temos.</p>
+              <p class="description">Tentamos sempre solucionar os problemas o mais rápido possível.</p>
             </div>
           </div>
 
@@ -195,7 +184,7 @@
             <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
               <div class="icon"><i class="bx bx-world"></i></div>
               <h4 class="title"><a href="">Veja o mundo</a></h4>
-              <p class="description">Não fique com medo de explorar, pois estamos sempre consigo.</p>
+              <p class="description">Não tenha medo de explorar, pois estamos sempre consigo.</p>
             </div>
           </div>
 
@@ -217,7 +206,7 @@
               <h3>Voar Mais Alto</h3>
               <p class="pb-3"><em>Aqui estão algumas informações para nos poder contactar caso tenha alguma dúvida.</em></p>
               <p>
-                Rua Exemplo, 1 <br>
+                Rua Exemplo 1 <br>
                 2640-000 Mafra<br><br>
                 <strong>Telefone:</strong> +351 210 000 000<br>
                 <strong>Email:</strong> geral@voarmaisalto.pt<br>
@@ -232,7 +221,7 @@
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
+          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
             <h4>Links úteis</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
@@ -243,15 +232,11 @@
             </ul>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-            
-          </div>
-
           <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Assine a nossa Newsletter</h4>
             <p>Fique por dentro de todas as nossas novidades, ofertas e descontos.</p>
             <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
+              <input type="email" name="email"><input type="submit" value="Subscrever">
             </form>
 
           </div>
@@ -276,30 +261,24 @@
         <h4 class="modal-title" id="exampleModalLabel">Login</h4>        
       </div>
       <div class="modal-body">
-        <form class="modal-content animate" action="post_login.php" method="post">
-			<div class="container">
-			  <div class="form-group">
-			  <br>
-			  <label for="uname"><b>Email:</b></label>
-			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
-              <br></div>			  
-			  <div class="form-group">
-			  <label for="psw"><b>Password:</b></label>
-			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
-			  </div>
-			  
-			  <div class="form-group text-right">
-			  <button type="submit" class="btn btn-primary">Login</button>
-			  </div>
-			</div>
-		 </form>
+        <form action="post_login.php" method="post">
+          <div class="form-group">
+            <label for="post_email">Email</label>
+            <input type="email" class="form-control" id="post_email" name="post_email" placeholder="Insira o email" required>
+          </div>
+          <div class="form-group">
+            <label for="post_password">Password</label>
+            <input type="password" class="form-control" id="post_password" name="post_password" placeholder="Insira a password" required>
+          </div>
+          <div class="form-group text-right mb-0">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
       </div>
-      <div class="modal-footer">
-		<span class="psw">Não está registado ?&emsp;<a href="register.php">Registe-se!</a></span>
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        
-	  </div>
+      <div class="modal-footer justify-content-between">
+        <span class="psw">Não está registado? <a href="register.php">Registe-se!</a></span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -327,4 +306,4 @@
 
 </body>
 
-</html>
+</html>

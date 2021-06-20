@@ -1,5 +1,13 @@
+<?php
+session_start();
+include 'db/config.php';
+if (isset($_GET['id']) && !is_numeric($_GET['id'])) {
+    header('Location: viagens.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
 
@@ -34,10 +42,6 @@
 </head>
 
 <body style="background-color:#f2f2f2">
-<?php
-  include 'db/config.php';
-  session_start();
-?>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top header-transparent">
@@ -54,42 +58,31 @@
           <li class="active"><a href="index.php">Home</a></li>
           <li class="drop-down"><a href="viagens.php">Viagens</a>
             <ul>
-			<li>
-			<a
                 <?php
                 $sql = "Select * from categoria";
                 $cats =$conexao->query($sql);
                 if ($cats->num_rows >0) {
                   while ($c = $cats->fetch_assoc()){
                     $cat=$c['CategoriaID'];
-                  echo' <a href="viagens.php?id='.$c['CategoriaID'].'"><center>'.$c['CategoriaNome'].'</center></a>';
+                  echo'<li><a href="viagens.php?id='.(int)$c['CategoriaID'].'"><center>'.e($c['CategoriaNome']).'</center></a></li>';
                   }
                 }
 				?>
-            </a>
-			</li>
 			</ul>
           </li>
           <li><a href="servicos.php">Serviços</a></li>
           <li><a href="sobrenos.php">Sobre Nós</a></li>
           <li><a href="#footer">Contactos</a></li>
 		  
-		  <?php		  
-		  //echo $_SESSION['utilizador'];
-		  if (isset($_SESSION['utilizador'])){		  
-			  echo '<li class="nav-item">';
-			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+		  <?php
+		  if (isset($_SESSION['utilizador'])){
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i> '.e($_SESSION['utilizador']).'</a>
 					<ul>
-					
 					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
-					
 					</ul>
 					</li>';
-			  echo '</li>';		  
 		  }else{
-			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a>';
-			  echo '</li>';
+			  echo '<li class="nav-item"><a class="nav-link" href="#modallogin" data-toggle="modal" data-target="#modallogin"><i class="fa fa-user-alt"></i></a></li>';
 		  }	  
 		  ?>
 		  
@@ -99,7 +92,7 @@
 			  
 			if($_SESSION['tipo']=='admin')
 			{
-                echo '<li class="nav-item"><a class="nav-link" href="admin/listaprodutos.php"><b>Backoffice</b></a></li>';
+                echo '<li class="nav-item"><a class="nav-link" href="admin/listaProdutos.php"><b>Backoffice</b></a></li>';
             }
 			
 		  }
@@ -113,6 +106,13 @@
   
   <!-- ======= Primeira parte ======= -->
   <section id="hero">
+<?php
+    if (isset($_GET['msg'])) {
+      $msg = $_GET['msg'];
+      $tipoMsg = (stripos($msg, 'sucesso') !== false) ? 'success' : 'danger';
+      echo "<div class='alert alert-".$tipoMsg." hero-msg'>".e($msg)."</div>";
+    }
+?>
     <div class="hero-container" data-aos="fade-up">
       <h1>Voar Mais Alto</h1>
       <h2>Voe, voe bem alto! Quanto mais alto voar, mais irá ver!</h2>
@@ -133,7 +133,7 @@
             <div class="content">
               <h3><center>Agência de viagens <br><b>Voar Mais Alto</b><center></h3>
               <p>
-                Como dizemos aos nossos clientes "<b>Vá onde você se sentir mais vivo</b>", estamos sempre um passo á frente, prevenindo quaisquer inconvenientes que possam ter durante a sua viagem.
+                Como dizemos aos nossos clientes "<b>Vá onde você se sentir mais vivo</b>", estamos sempre um passo à frente, prevenindo quaisquer inconvenientes que possam ter durante a sua viagem.
               </p>
               <center><a href="sobrenos.php" class="about-btn">Mais sobre nós<i class="bx bx-chevron-right"></i></a></center>
             </div>
@@ -144,7 +144,7 @@
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
                   <i class="bx bx-images"></i>
                   <h4>Registe momentos</h4>
-                  <p>Crie e viva momentos que nunca se irá esqueçer.</p>
+                  <p>Crie e viva momentos que nunca se irá esquecer.</p>
                 </div>
                 <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
                   <i class="bx bx-shield"></i>
@@ -185,15 +185,17 @@
       <div class="col-lg-12">
 
        <?php
-         
-       if(isset( $_GET['msg'])){
-        $msg= $_GET['msg'];
-        echo "<div class='alert alert-warning mx-auto'>" . $msg."</div>" ;
-        unset($_GET['msg']); } 
-		
-		function limitarTexto($texto, $limite){
-		$texto = substr($texto, 0, strrpos(substr($texto, 0, $limite), ' ')) . '...';
-		return $texto;
+
+		function limitarTexto($texto, $limite) {
+		if (mb_strlen($texto) <= $limite) {
+			return $texto;
+		}
+		$corte = mb_substr($texto, 0, $limite);
+		$espaco = mb_strrpos($corte, ' ');
+		if ($espaco !== false) {
+			$corte = mb_substr($corte, 0, $espaco);
+		}
+		return rtrim($corte, " .,;:!?-") . '...';
 		}
 			
 		?>
@@ -207,13 +209,16 @@
         <div class="row">
           <?php
 		  			
-			if (isset($_GET['id'])){	
-			  $id = $_GET['id'];			
-			  $sql = "Select * from produto where categoriaID='$id' order by produtoID desc limit 6 ";
+			if (isset($_GET['id'])){
+			  $id = (int)$_GET['id'];
+			  $stmtP = mysqli_prepare($conexao, "Select * from produto where categoriaID=? order by produtoID desc limit 6");
+			  mysqli_stmt_bind_param($stmtP, 'i', $id);
+			  mysqli_stmt_execute($stmtP);
+			  $produtos = mysqli_stmt_get_result($stmtP);
 		    }else{
 			  $sql = "Select * from produto order by produtoID desc limit 6";
-		    }          
-            $produtos =$conexao->query($sql);
+			  $produtos = $conexao->query($sql);
+		    }
             if ($produtos->num_rows >0) {
               while ($p = $produtos->fetch_assoc()){
 				  
@@ -224,24 +229,26 @@
                 echo' <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
                     <div class="containerI">
-                    <img src="admin/'.$p['imagem'].'" alt="Avatar" class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                    </div>                  
+                    <img src="admin/'.e($p['imagem']).'" alt="'.e($p['produtoNome']).'" class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                    </div>
                       <div class="card-body">
                         <h4 class="card-title">
-                          <a><center><b>'.$p['produtoNome'].'</b></center></a>
-						  
+                          <a><center><b>'.e($p['produtoNome']).'</b></center></a>
+
                         </h4>
-						
-                        <p class="card-text">'."<h6><b>Descrição: </b></h6>".''.(limitarTexto($descricao, $limite = 200)).'</p>
-                        <h5><b>'."Preço: ".'</b>'.$p['preco'].' €</h5>
+
+                        <p class="card-text">'."<h6><b>Descrição: </b></h6>".''.e(limitarTexto($descricao, $limite = 200)).'</p>
+                        <h5><b>'."Preço: ".'</b>'.e($p['preco']).' €</h5>
 						&ensp;
-                    <center><div class="overlayC"><a href="detalheProduto.php?id='.$p['produtoID'].'"><button type="button" class="btn btn-primary">Ver detalhes</button></a></div></center>
-                      </div>';					  
+                    <center><div class="overlayC"><a href="detalheProduto.php?id='.(int)$p['produtoID'].'"><button type="button" class="btn btn-primary">Ver detalhes</button></a></div></center>
+                      </div>';
 					    if (isset($_SESSION['idutilizador'])){
                          echo '<div class="card-footer">
-                               <center><a href="confirmacaoCompra.php?acao=add&id='.$p['produtoID'].'"><button type="button" class="btn btn-primary">&emsp;<i class="fas fa-cart-plus"></i>&emsp;</button></a></center>
+                               <center><a href="confirmacaoCompra.php?acao=add&id='.(int)$p['produtoID'].'"><button type="button" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Comprar</button></a></center>
                                </div>';
-					      }
+					      }else{
+                         echo '<div class="card-footer"><center><small>Inicie sessão para comprar</small></center></div>';
+                      }
                     echo '</div>
                   </div> ';
               }
@@ -270,7 +277,7 @@
               <h3>Voar Mais Alto</h3>
               <p class="pb-3"><em>Aqui estão algumas informações para nos poder contactar caso tenha alguma dúvida.</em></p>
               <p>
-                Rua Exemplo, 1 <br>
+                Rua Exemplo 1 <br>
                 2640-000 Mafra<br><br>
                 <strong>Telefone:</strong> +351 210 000 000<br>
                 <strong>Email:</strong> geral@voarmaisalto.pt<br>
@@ -285,7 +292,7 @@
             </div>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
+          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="150">
             <h4>Links úteis</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
@@ -296,15 +303,11 @@
             </ul>
           </div>
 
-          <div class="col-lg-2 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-            
-          </div>
-
           <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Assine a nossa Newsletter</h4>
             <p>Fique por dentro de todas as nossas novidades, ofertas e descontos.</p>
             <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
+              <input type="email" name="email"><input type="submit" value="Subscrever">
             </form>
 
           </div>
@@ -333,12 +336,12 @@
 			<div class="container">
 			  <div class="form-group">
 			  <br>
-			  <label for="uname"><b>Email:</b></label>
-			  <input type="text" class="form-control" name="post_email" placeholder="Insira o utilizador" name="uname" required>
+			  <label for="post_email"><b>Email:</b></label>
+			  <input type="email" class="form-control" id="post_email" name="post_email" placeholder="Insira o email" required>
               <br></div>			  
 			  <div class="form-group">
-			  <label for="psw"><b>Password:</b></label>
-			  <input type="password" class="form-control" name="post_password" placeholder="Insira a Password" name="psw" required>
+			  <label for="post_password"><b>Password:</b></label>
+			  <input type="password" class="form-control" id="post_password" name="post_password" placeholder="Insira a Password" required>
 			  </div>
 			  
 			  &emsp;
@@ -352,7 +355,7 @@
       <div class="modal-footer">
 		<span class="psw">Não está registado?&emsp;<a href="register.php">Registe-se!</a></span>
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         
 	  </div>
     </div>
