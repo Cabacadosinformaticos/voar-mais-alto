@@ -8,7 +8,7 @@
   <meta name="description" content="Agencia de viagens">
   <meta name="author" content="Tiago Cabaça">
 
-  <title>Agencia de viagens - Voar Mais Alto</title>
+  <title>Agência de viagens - Voar Mais Alto</title>
   
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -30,13 +30,10 @@
 <?php
   include 'db/config.php';
   session_start();
-  /* $id_produto= $_GET['id'];
-  $sql = "Select * from produto WHERE id='$id_produto' ";    
   
-  $produtos =$conexao->query($sql);
-  $p = $produtos->fetch_assoc();
-   */
-echo	'<div id="vendas" class="section">
+?>
+
+  <div id="vendas" class="section">
 		<div class="section-center">
 			<div class="container">
 				<div class="row">
@@ -48,19 +45,19 @@ echo	'<div id="vendas" class="section">
 					</div>
 					<div class="col-md-4 col-md-pull-7">
 						<div class="vendas-form">
-							<form method="post" action="processa_novo_produto.php">
+							<form method="post" action="insereCompra.php">
 								
 								<div class="row">
 									<div class="col-sm-6">
 										<div class="form-group">
 											<span class="form-label">Check In</span>
-											<input class="form-control" type="date" required>
+											<input class="form-control" name="checkin" type="date" min="2021-07-01" required>
 										</div>
 									</div>
 									<div class="col-sm-6">
 										<div class="form-group">
-											<span class="form-label">Check out</span>
-											<input class="form-control" type="date" required>
+											<span class="form-label">Check Out</span>
+											<input class="form-control" name="checkout" type="date" min="2021-07-02" required>
 										</div>
 									</div>
 								</div>
@@ -68,35 +65,37 @@ echo	'<div id="vendas" class="section">
 									<div class="col-sm-4">
 										<div class="form-group">
 											<span class="form-label">Quartos</span>
-											<select class="form-control">';
-												for ($x = 1; $x <= 2; $x++) {
-													echo'<option> '.$x.' </option>';
-												  }
-											echo '</select>
+											<select name="quartos" class="form-control">
+											
+												<option value="1">1</option>
+												<option value="2">2</option>
+												
+											</select>
 											<span class="select-arrow"></span>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="form-group">
 											<span class="form-label">Adultos</span>
-											<select class="form-control">';
-												for ($x = 1; $x <= 2; $x++) {
-													echo'<option> '.$x.' </option>';
-												  }
-											echo '</select>
+											<select name="adultos" class="form-control">
+											
+												<option value="1">1</option>
+												<option value="2">2</option>
+												
+											</select>
 											<span class="select-arrow"></span>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="form-group">
 											<span class="form-label">Crianças</span>
-											<select class="form-control">';
+											<select name="criancas" class="form-control">
 												
-												for ($x = 0; $x <= 2; $x++) {
-													echo'<option> '.$x.' </option>';
-												  }
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
 												
-											echo '</select>
+											</select>
 											<span class="select-arrow"></span>
 										</div>
 									</div>
@@ -112,10 +111,7 @@ echo	'<div id="vendas" class="section">
 				</div>
 			</div>
 		</div>
-	</div>';
-	
-	
-	?>
+	</div>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -178,7 +174,18 @@ echo	'<div id="vendas" class="section">
 	        </div> <!-- form-group.// -->
 	    </div>
 	</div> <!-- row.// -->
-	<a href="index.php"><button  class="subscribe btn btn-primary btn-block" type="button"> Comprar </button></a>
+	<?php
+	$id = $_GET['id'];
+	$sql = "SELECT * FROM produto WHERE produtoID='$id'";
+	$produtos = $conexao->query($sql);
+	$p = $produtos->fetch_assoc();
+  
+	if (isset($_SESSION['idutilizador'])){
+		
+    echo '<a href="insereCompra.php?acao=add&id='.$p['produtoID'].'"><button  class="subscribe btn btn-primary btn-block" type="button"> Comprar </button></a>';
+	
+	}
+	?>
 	</form>
 </div> <!-- tab-pane.// -->
 <div class="tab-pane fade" id="nav-tab-paypal">
@@ -219,6 +226,10 @@ echo	'<div id="vendas" class="section">
 
   </div>
 </div>
+
+	<!-- Bootstrap core JavaScript -->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script src="assets/js/vendor/jquery-slim.min.js"></script>
     <script src="assets/js/vendor/popper.min.js"></script>

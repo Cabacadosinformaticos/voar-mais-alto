@@ -75,7 +75,13 @@
 		  //echo $_SESSION['utilizador'];
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+					<ul>
+					
+					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
+					
+					</ul>
+					</li>';
 			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';

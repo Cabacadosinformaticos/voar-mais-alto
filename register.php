@@ -8,7 +8,7 @@
   <meta name="description" content="Agencia de viagens">
   <meta name="author" content="Tiago Cabaça">
 
-  <title>Agencia de viagens - Voar Mais Alto</title>
+  <title>Agência de viagens - Voar Mais Alto</title>
   
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -49,14 +49,18 @@
     </style>
   
   
-  <body>
+<body>
+<?php
+  include 'db/config.php';
+  session_start();
+?>
   
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html"><span>Voar Mais Alto</span></a></h1>
+        <h1 class="text-light"><a href="index.php"><span>Voar Mais Alto</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -90,7 +94,13 @@
 		  //echo $_SESSION['utilizador'];
 		  if (isset($_SESSION['utilizador'])){		  
 			  echo '<li class="nav-item">';
-			  echo '<a class="nav-link" href="post_logout.php"><i class="fa fa-user-alt"></i>  Sair</a>';
+			  echo '<li class="drop-down"><a><i class="fa fa-user-alt"></i></a>
+					<ul>
+					
+					<li><a class="nav-link" href="post_logout.php" style="color:red;"><center>Sair</center></a></li>
+					
+					</ul>
+					</li>';
 			  echo '</li>';		  
 		  }else{
 			  echo '<li class="nav-item">';
@@ -135,21 +145,21 @@
 		  
 		  <div class="form-group">
 			<label for="exampleFormControlInput1">Email</label>
-			<input type="email" class="form-control" id="post_email" name="post_email" placeholder="ex: utilizador100@example.com" required>
+			<input type="email" class="form-control" id="post_email" name="post_email" placeholder="ex: utilizador105@example.com" required>
 		  </div>
 		  
 		  
 		  <div class="form-group">
 			<label for="exampleFormControlSelect1">Morada</label>
-			<textarea class="form-control" id="post_morada" name="post_morada" rows="2" required></textarea>
+			<textarea class="form-control" id="post_morada" name="post_morada" rows="2" placeholder="ex: Rua das flores Nº3" required></textarea>
 		  </div>
 		  <div class="form-group">
 			<label for="exampleFormControlSelect2">Telefone</label>
-			<input type="number" class="form-control" id="post_telefone" name="post_telefone" placeholder="Introduza número de telefone" required>
+			<input type="number" class="form-control" id="post_telefone" name="post_telefone" placeholder="Introduza um número de telemóvel" required>
 		  </div>
 		  
 		  <div class="form-group">
-			<label for="exampleFormControlTextarea1">Insira a Password</label>
+			<label for="exampleFormControlTextarea1">Password</label>
 			<input type="password" class="form-control" id="post_password1" name="post_password1" placeholder="Escolha uma password forte" required>
 		  </div>
 		  <div class="form-group">
@@ -162,7 +172,7 @@
      </div><!-- Fim dos elementos do Registo -->
  </main>
  
-	<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br>
+	<br></br><br></br>
  
 	<!-- ======= Footer ======= -->
   <footer id="footer">
