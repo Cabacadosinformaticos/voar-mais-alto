@@ -17,6 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+CREATE DATABASE IF NOT EXISTS bd_voarmaisalto DEFAULT CHARACTER SET utf8mb4;
+USE bd_voarmaisalto;
+
 --
 -- Banco de dados: `bd_voarmaisalto`
 --
@@ -101,8 +104,8 @@ CREATE TABLE `login` (
   `utilizador` varchar(30) NOT NULL,
   `email` varchar(60) NOT NULL,
   `morada` varchar(50) NOT NULL,
-  `telefone` int(9) NOT NULL,
-  `password` varchar(10) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `tipo` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -111,19 +114,19 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `utilizador`, `email`, `morada`, `telefone`, `password`, `tipo`) VALUES
-(1, 'Admin', 'admin@voarmaisalto.pt', '', 0, 'admin', 'admin'),
-(14, 'Ana Ferreira', 'ana.ferreira@example.com', 'Rua Exemplo, 1, Mafra', 910000000, 'teste123', 'user'),
-(15, 'Bruno Costa', 'bruno.costa@example.com', 'Rua Exemplo, 2, Mafra', 910000000, 'teste123', 'user'),
-(16, 'Carla Sousa', 'carla.sousa@example.com', 'Rua Exemplo, 3, Mafra', 910000000, 'teste123', 'user'),
-(17, 'Diogo Martins', 'diogo.martins@example.com', 'Rua Exemplo, 4, Mafra', 910000000, 'teste123', 'user'),
-(20, 'Eduarda Lopes', 'eduarda.lopes@example.com', 'Rua Exemplo, 5, Mafra', 910000000, 'teste123', 'user'),
-(21, 'Filipe Nunes', 'filipe.nunes@example.com', 'Rua Exemplo, 6, Mafra', 910000000, 'teste123', 'user'),
-(22, 'Gabriela Rocha', 'gabriela.rocha@example.com', 'Rua Exemplo, 7, Mafra', 910000000, 'teste123', 'user'),
-(23, 'Hugo Almeida', 'hugo.almeida@example.com', 'Rua Exemplo, 8, Mafra', 910000000, 'teste123', 'user'),
-(24, 'Inês Moreira', 'ines.moreira@example.com', 'Rua Exemplo, 9, Mafra', 910000000, 'teste123', 'user'),
-(25, 'Joana Pinto', 'joana.pinto@example.com', 'Rua Exemplo, 10, Mafra', 910000000, 'teste123', 'user'),
-(26, 'Luís Carvalho', 'luis.carvalho@example.com', 'Rua Exemplo, 11, Mafra', 910000000, 'teste123', 'user'),
-(28, 'Marta Ribeiro', 'marta.ribeiro@example.com', 'Rua Exemplo, 12, Mafra', 910000000, 'teste123', 'user');
+(1, 'Admin', 'admin@voarmaisalto.pt', '', '0', '$2y$10$j3ANRIC5PNJlKuz7n1izRemf6TIxzNM1dODj7delltp9S606xwBPq', 'admin'),
+(14, 'Ana Ferreira', 'ana.ferreira@example.com', 'Rua Exemplo, 1, Mafra', '910000001', '$2y$10$M577D0OXkyyXnVkZS.FIxe0M0nd2CMTz8QjJrLa6QLgbwqOaYkJyu', 'user'),
+(15, 'Bruno Costa', 'bruno.costa@example.com', 'Rua Exemplo, 2, Mafra', '910000002', '$2y$10$0.p.QZ5.dNsGRzHnzfTvZ.EhqsujzUh6bTY.KN1JZXgH/RVmiIFNO', 'user'),
+(16, 'Carla Sousa', 'carla.sousa@example.com', 'Rua Exemplo, 3, Mafra', '910000003', '$2y$10$NMgaoIvFHaK.yYViFVPheOOGmv1JbHlf50eVvCD8C4GHuhUJh7lHu', 'user'),
+(17, 'Diogo Martins', 'diogo.martins@example.com', 'Rua Exemplo, 4, Mafra', '910000004', '$2y$10$a6GOWvg372WE.2zXLmAkze9JJVk7vdrFE1btvgjcUHIPUsJGO1Xsi', 'user'),
+(20, 'Eduarda Lopes', 'eduarda.lopes@example.com', 'Rua Exemplo, 5, Mafra', '910000005', '$2y$10$X49TQe426LCZ7hIu/HkASeoHPleSh./.ZqMPClmx6lPHm9y5y.HKO', 'user'),
+(21, 'Filipe Nunes', 'filipe.nunes@example.com', 'Rua Exemplo, 6, Mafra', '910000006', '$2y$10$2WSxI6RLB.rxC4LZyPnYsOdsLxc1djO0eRUO/U0Bor3TaUSAw26zm', 'user'),
+(22, 'Gabriela Rocha', 'gabriela.rocha@example.com', 'Rua Exemplo, 7, Mafra', '910000007', '$2y$10$gse004Hka2ilAMTF2QpfwOEL2Zf1SBMuds/MFVfV2jU2JlvImAsXu', 'user'),
+(23, 'Hugo Almeida', 'hugo.almeida@example.com', 'Rua Exemplo, 8, Mafra', '910000008', '$2y$10$BgvAg8B.2yB7d5liDixXv.ws8NlqCuRuTUUTFoWOPe7ANKTXXTYZy', 'user'),
+(24, 'Inês Moreira', 'ines.moreira@example.com', 'Rua Exemplo, 9, Mafra', '910000009', '$2y$10$G2jIjsJNf331v1UfLkvexebHy24ARI167u8V4jHOnhw84eP.aeBEa', 'user'),
+(25, 'Joana Pinto', 'joana.pinto@example.com', 'Rua Exemplo, 10, Mafra', '910000010', '$2y$10$aataP16N/DZHAWj9kXYVXOlcZbaVu8jBZfvxn4UDgb24rb45tXokO', 'user'),
+(26, 'Luís Carvalho', 'luis.carvalho@example.com', 'Rua Exemplo, 11, Mafra', '910000011', '$2y$10$G9cv/ONHWQVx0PUqeWXLlOMoD1UyQvSGqhTklp2Upy.23ZKVIcjXm', 'user'),
+(28, 'Marta Ribeiro', 'marta.ribeiro@example.com', 'Rua Exemplo, 12, Mafra', '910000012', '$2y$10$Nbv3C72JB0DgwXIRDdam8ePFRwdPlkzVfIMBh3lDHxbYFgBbI5VmO', 'user');
 
 -- --------------------------------------------------------
 
@@ -150,13 +153,13 @@ INSERT INTO `produto` (`produtoID`, `produtoNome`, `preco`, `stock`, `imagem`, `
 (25, 'Viagem ao México', 1700, 2, 'img_produtos/Viagem ao México.jpg', 11, 'Cancun, destino turístico por excelência de sol e praia. Localizado na esquina nordeste da península de Yucatán, no estado de Quintana Roo, Cancún forma parte do território da antiga civilização maia e é considerada a entrada para o Mundo Maia. Para finalizar desfrute a Riviera Maya, uma zona turística por excelência das Caraíbas com praias espectaculares.'),
 (27, 'Viagem à Tailândia', 3700, 8, 'img_produtos/Viagem à Tailânda.jpg', 10, '“Terra dos sorrisos”, a Tailândia é porventura, de um ponto de vista puramente turístico, o mais atrativo país do Sudeste Asiático. A capital Bangkok, a cidade de Chiang Mai, as minorias étnicas em Mai Hong Son, ilhas paradisíacas como as Phi Phi ou Koh Tao, a histórica Kanchanaburi, a cultura e arquitetura de Ayuthaya ou Sukhothai, e praias, muitas praias e resorts de luxo, como em Phuket, fazem das viagens à Tailândia a imagem do perfeito bilhete-postal tropical.  '),
 (28, 'Viagem à Turquia', 2300, 6, 'img_produtos/Viagem à Turquia.jpg', 12, 'Extenso país de múltiplos contrastes, a Turquia é um destino de viagem verdadeiramente interessante. Da riquíssima cidade de Istambul à lunática Capadócia, da subida ao monte Ararat à imensa Anatólia, passando pelos azulejos de Iznik, pelo Mar Negro, pelas praias e ilhas turcas do Mediterrâneo. Quaisquer que sejam as razões de uma viagem à Turquia (arquitetónicas, culturais, simples férias de verão, ou outras), a deslocação ao antigo Império Otomano vale bem a pena.'),
-(29, 'Viagem ao Egito', 3000, 12, 'img_produtos/Viagem ao Egito.jpg', 14, 'Com a paisagem dominada pelos desertos e pela presença do Rio Nilo, nele floresceu a primeira grande civilização da humanidade. Nos dias de hoje, o Egito merece cada vez mais a atenção do viajante.  Do caos das ruas do Cairo a Abu Simbel, do Templo de Karnak, em Luxor, ao inóspito oásis de Siwa, do bíblico Monte Sinai aos resorts do litoral do Mar Vermelho (como Sharm-el-Sheikh, Hurghada ou mesmo Dahab), da Biblioteca de Alexandria às incontornáveis Pirâmides de Gizé, passando pelo magnífico Delta do Nilo, o Egito continua a ser um dos mais fascinantes destinos para visitar no Norte de Áfric'),
-(30, 'Viagem à India', 2400, 3, 'img_produtos/Viagem à India.jpg', 16, 'Costuma-se dizer que cada Estado da Índia é um país, tal a diversidade cultural e paisagística de toda a Índia. Do incontornável Taj Mahal, em Agra, à mágica cidade de Udaipur e todo o Rajastão, das montanhas de Darjeeling ao deserto de Jaisalmer, dos Himalaias, em Leh, aos canais e lagoas de Keralan ou às praias da portuguesa Goa, passando pelas caóticas metrópoles de Nova Deli e Bombaim, uma viagem à Índia marca para toda a vida. Sem contemplações.'),
+(29, 'Viagem ao Egito', 3000, 12, 'img_produtos/Viagem ao Egito.jpg', 14, 'Com a paisagem dominada pelos desertos e pela presença do Rio Nilo, nele floresceu a primeira grande civilização da humanidade. Nos dias de hoje, o Egito merece cada vez mais a atenção do viajante.  Do caos das ruas do Cairo a Abu Simbel, do Templo de Karnak, em Luxor, ao inóspito oásis de Siwa, do bíblico Monte Sinai aos resorts do litoral do Mar Vermelho (como Sharm-el-Sheikh, Hurghada ou mesmo Dahab), da Biblioteca de Alexandria às incontornáveis Pirâmides de Gizé, passando pelo magnífico Delta do Nilo, o Egito continua a ser um dos mais fascinantes destinos para visitar no Norte de África.'),
+(30, 'Viagem à Índia', 2400, 3, 'img_produtos/Viagem à India.jpg', 16, 'Costuma-se dizer que cada Estado da Índia é um país, tal a diversidade cultural e paisagística de toda a Índia. Do incontornável Taj Mahal, em Agra, à mágica cidade de Udaipur e todo o Rajastão, das montanhas de Darjeeling ao deserto de Jaisalmer, dos Himalaias, em Leh, aos canais e lagoas de Keralan ou às praias da portuguesa Goa, passando pelas caóticas metrópoles de Nova Deli e Bombaim, uma viagem à Índia marca para toda a vida. Sem contemplações.'),
 (31, 'Viagem às Bahamas', 2000, 1, 'img_produtos/Viagem às Bahamas.jpg', 24, 'As Bahamas, com praias quase desertas e enseadas escondidas, garantem a tranquilidade dos visitantes em um paraíso de mais de 700 ilhas e ilhotas. As águas cristalinas têm diferentes tonalidades, desde o turquesa claro ao rosa. Estamos definitivamente no Caribe.'),
 (32, 'Viagem à Argentina', 2100, 7, 'img_produtos/Viagem à Argentina.jpg', 19, 'Terra da vastidão das pampas e da cosmopolita Buenos Aires, do tango e das milongas, dos glaciares da Patagónia (a Terra do Fogo) e do vinho de Mendoza, das Cataratas de Iguazú e de um sem fim de atrativos, naturais e culturais, para quem anda em viagem, a Argentina é um dos destinos mais diversificados da América do Sul.'),
 (33, 'Viagem à Tunísia', 2684, 9, 'img_produtos/Viagem à Tunísia.jpg', 15, 'Considerado um dos países mais fáceis de África para viajar, a Tunísia oferece de tudo um pouco. São disso exemplo a arquitetura deslumbrante de Sidi Bou Said, a labiríntica Medina de Tunes, os resorts de Hammamet e Tabarka, a ilha de Djerba, o coliseu de El-Jem, as planícies salgadas de Chott el-Jerid, Douz e o deserto do Sahara, e Sidi Ali el-Mekki, considerada por alguns a mais bonita praia da Tunísia. Atrações que ajudam a tornar as viagens à Tunísia experiências singulares.'),
 (34, 'Viagem ao Brasil', 1654, 8, 'img_produtos/Viagem ao Brasil.jpg', 22, 'O Brasil é um país imenso, sensual, extraordinário, diversificado. Propício a viagens sem pressas, no Brasil pode conhecer as raízes africanas da Bahia, a paisagem incomparável de lagoas e dunas nos Lençóis Maranhenses, os encantos naturais do Pantanal e da mata atlântica, o santuário ecológico de Fernando de Noronha, os povos indígenas da Amazónia (esse grande pulmão do planeta, maior floresta tropical do mundo que ocupa mais de metade do território do Brasil), as gentes simples do sertão, as praias de areia fina do nordeste e as festas de rua como o carnaval do Rio de Janeiro.'),
-(36, 'Viagem á Geórgia', 1500, 2, 'img_produtos/Viagem à Geórgia.jpg', 17, 'Igrejas empoleiradas, torres e castelos a ornamentar o cimo das montanhas, cidades escandalosamente bonitas (como Svaneti e Kazbegi) e outras quase subtropicais, como Batumi, na costa do Mar Negro. Acrescente-se a este magnífico cocktail a irreprimível vontade de bem receber da população georgiana e as diretrizes políticas de apetrechar o país com tudo o que os visitantes precisam, e está encontrado um país imperdível. Para explorar a pé, a cavalo ou de carro.  A capital da Geórgia, Tbilisi, é uma cidade do século XXI, com casas noturnas a piscar o olho ao ocidente, mas não deixa de manter a atmosfera de uma cidade plantada nas antigas encruzilhadas da Eurásia. Uma encruzilhada que lhe garantiu uma história longa e complicada e lhe deixou um conjunto de influências marcantes e uma herança riquíssima da Turquia, Rússia, Pérsia e Ásia Central. Hoje em dia, a Geórgia olha para a Europa como o seu futuro e é o mais ocidental na atmosfera dos três países do Cáucaso.');
+(36, 'Viagem à Geórgia', 1500, 2, 'img_produtos/Viagem à Geórgia.jpg', 17, 'Igrejas empoleiradas, torres e castelos a ornamentar o cimo das montanhas, cidades escandalosamente bonitas (como Svaneti e Kazbegi) e outras quase subtropicais, como Batumi, na costa do Mar Negro. Acrescente-se a este magnífico cocktail a irreprimível vontade de bem receber da população georgiana e as diretrizes políticas de apetrechar o país com tudo o que os visitantes precisam, e está encontrado um país imperdível. Para explorar a pé, a cavalo ou de carro.  A capital da Geórgia, Tbilisi, é uma cidade do século XXI, com casas noturnas a piscar o olho ao ocidente, mas não deixa de manter a atmosfera de uma cidade plantada nas antigas encruzilhadas da Eurásia. Uma encruzilhada que lhe garantiu uma história longa e complicada e lhe deixou um conjunto de influências marcantes e uma herança riquíssima da Turquia, Rússia, Pérsia e Ásia Central. Hoje em dia, a Geórgia olha para a Europa como o seu futuro e é o mais ocidental na atmosfera dos três países do Cáucaso.');
 
 --
 -- Índices para tabelas despejadas
