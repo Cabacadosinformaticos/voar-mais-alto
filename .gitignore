@@ -1,0 +1,10 @@
+# Agent and editor files
+CLAUDE.md
+AGENTS.md
+.claude/
+.codex/
+.mcp.json
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
